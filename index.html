@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FFPOS267SU0949</title>
+<title>FFPOS267SU1122</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#e65100">
 <meta name="mobile-web-app-capable" content="yes">
@@ -1694,8 +1694,22 @@
         <div class="shop-name-hint">✏️ TAP TO EDIT</div>
       </div>
 
-      <!-- ═══ ONLINE/OFFLINE + BUILD VERSION INDICATOR + REFRESH ═══ -->
-      <div style="display:flex;align-items:center;gap:8px;">
+      <!-- ═══ MY ADS (بائیں) + ONLINE/OFFLINE + VERSION (درمیان) + SHARE (دائیں) + REFRESH ═══ -->
+      <div style="display:flex;align-items:center;gap:7px;justify-content:center;flex-wrap:nowrap;">
+
+        <!-- My Ads — پیل کے بائیں -->
+        <button id="myAdsHeaderBtn" onclick="openMyAdsModal()" title="📣 My Ads" style="
+            width:36px;height:36px;border-radius:50%;flex-shrink:0;
+            border:1.5px solid rgba(255,255,255,0.22);
+            background:linear-gradient(160deg,#1c1c1c,#0a0a0a);
+            box-shadow:0 3px 8px rgba(0,0,0,0.35);
+            display:flex;align-items:center;justify-content:center;
+            cursor:pointer;-webkit-tap-highlight-color:transparent;padding:0;"
+          onmousedown="this.style.transform='scale(0.92)'" onmouseup="this.style.transform=''"
+          ontouchstart="this.style.transform='scale(0.92)'" ontouchend="this.style.transform=''">
+          <span style="font-size:19px;">📣</span>
+        </button>
+
         <div id="netStatusPill" style="
           display:flex;flex-direction:column;align-items:center;
           background:linear-gradient(160deg,#1c1c1c,#0a0a0a);
@@ -1715,15 +1729,34 @@
             text-shadow:0 0 4px rgba(255,213,79,0.35);">FF001</div>
         </div>
 
+        <!-- Share App — پیل کے دائیں -->
+        <button id="shareAppHeaderBtn" onclick="shareAppNow()" title="📤 ایپ شیئر کریں (لمبا دبائیں: لنک ایڈٹ کریں)" style="
+            width:36px;height:36px;border-radius:50%;flex-shrink:0;
+            border:1.5px solid rgba(255,255,255,0.22);
+            background:linear-gradient(160deg,#1c1c1c,#0a0a0a);
+            box-shadow:0 3px 8px rgba(0,0,0,0.35);
+            display:flex;align-items:center;justify-content:center;
+            cursor:pointer;-webkit-tap-highlight-color:transparent;padding:0;"
+          onmousedown="this.style.transform='scale(0.92)';_shareLpStart()" onmouseup="this.style.transform='';_shareLpEnd()"
+          ontouchstart="this.style.transform='scale(0.92)';_shareLpStart()" ontouchend="this.style.transform='';_shareLpEnd()">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="18" cy="5" r="3" fill="#37474f" stroke="#fff"/>
+            <circle cx="6" cy="12" r="3" fill="#37474f" stroke="#fff"/>
+            <circle cx="18" cy="19" r="3" fill="#37474f" stroke="#fff"/>
+            <line x1="8.6" y1="10.6" x2="15.4" y2="6.4"/>
+            <line x1="8.6" y1="13.4" x2="15.4" y2="17.6"/>
+          </svg>
+        </button>
+
         <!-- تازہ ورژن چیک کرنے کا بٹن — پرانا کیش/سروس ورکر ہٹا کر تازہ فائل لوڈ کرتا ہے -->
         <button id="appRefreshBtn" onclick="forceAppUpdate()" title="نیا ورژن چیک کریں" style="
-          width:38px;height:38px;border-radius:50%;flex-shrink:0;
+          width:36px;height:36px;border-radius:50%;flex-shrink:0;
           border:1.5px solid rgba(255,255,255,0.22);
           background:linear-gradient(160deg,#1c1c1c,#0a0a0a);
           box-shadow:0 3px 8px rgba(0,0,0,0.35);
           display:flex;align-items:center;justify-content:center;
           cursor:pointer;-webkit-tap-highlight-color:transparent;
-          font-size:17px;line-height:0;padding:0;">
+          font-size:16px;line-height:0;padding:0;">
           <span id="appRefreshIcon" style="display:inline-block;transition:transform .5s ease;">🔄</span>
         </button>
       </div>
@@ -1863,52 +1896,6 @@
         transition:background .4s, box-shadow .4s;
       "></div>
     </div>
-  </button>
-
-  <!-- ═══ SHARE APP BUTTON — Android کا معیاری شیئر آئیکن (تین نوڈز) — ٹیپ=شیئر، لمبا دبانے پر=لنک/ٹیکسٹ ایڈٹ ═══ -->
-  <button id="shareAppHeaderBtn"
-    onclick="shareAppNow()"
-    title="📤 ایپ شیئر کریں (لمبا دبائیں: لنک ایڈٹ کریں)"
-    style="
-      position:absolute; top:9px; right:52px;
-      display:block;
-      background:transparent; border:none; padding:0; margin:0;
-      cursor:pointer; z-index:50; line-height:0;
-      -webkit-tap-highlight-color:transparent;
-      filter:drop-shadow(0 2px 3px rgba(0,0,0,0.55));
-      transition:transform .1s ease;
-    "
-    onmousedown="this.style.transform='scale(0.92)';_shareLpStart()"
-    onmouseup="this.style.transform='';_shareLpEnd()"
-    ontouchstart="this.style.transform='scale(0.92)';_shareLpStart()"
-    ontouchend="this.style.transform='';_shareLpEnd()">
-    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="18" cy="5" r="3" fill="#37474f" stroke="#fff"/>
-      <circle cx="6" cy="12" r="3" fill="#37474f" stroke="#fff"/>
-      <circle cx="18" cy="19" r="3" fill="#37474f" stroke="#fff"/>
-      <line x1="8.6" y1="10.6" x2="15.4" y2="6.4"/>
-      <line x1="8.6" y1="13.4" x2="15.4" y2="17.6"/>
-    </svg>
-  </button>
-
-  <!-- ═══ MY ADS BUTTON — اشتہاری/پیکج پلان پوسٹر بنانے/شیئر کرنے کے لیے ═══ -->
-  <button id="myAdsHeaderBtn"
-    onclick="openMyAdsModal()"
-    title="📣 My Ads"
-    style="
-      position:absolute; top:9px; right:94px;
-      display:block;
-      background:transparent; border:none; padding:0; margin:0;
-      cursor:pointer; z-index:50; line-height:0;
-      -webkit-tap-highlight-color:transparent;
-      filter:drop-shadow(0 2px 3px rgba(0,0,0,0.55));
-      transition:transform .1s ease;
-    "
-    onmousedown="this.style.transform='scale(0.92)'"
-    onmouseup="this.style.transform=''"
-    ontouchstart="this.style.transform='scale(0.92)'"
-    ontouchend="this.style.transform=''">
-    <span style="font-size:24px;">📣</span>
   </button>
 
 </div>
@@ -8139,7 +8126,7 @@ document.addEventListener('DOMContentLoaded', function(){
 // 1 نمبر بڑھایا جائے گا: FF001, FF002, FF003 ...
 // یہ Online/Offline انڈیکیٹر کے نیچے دکھایا جاتا ہے۔
 // ============================================================
-const FF_BUILD_NO = 'FF006';
+const FF_BUILD_NO = 'FF007';
 document.addEventListener('DOMContentLoaded', function(){
   const el = document.getElementById('netStatusVersion');
   if(el) el.textContent = FF_BUILD_NO;
