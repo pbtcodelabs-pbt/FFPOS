@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FFPOS267SU0834</title>
+<title>FFPOS267SU0846</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#e65100">
 <meta name="mobile-web-app-capable" content="yes">
@@ -2190,6 +2190,85 @@
       <textarea class="manage-input" id="bcFooter" rows="3" placeholder="آپ کے یہاں آنے کا شکریہ&#10;آرڈر کے لیے رابطہ: 03XX-XXXXXXX" style="resize:vertical;font-size:12px;line-height:1.5;"></textarea>
 
       <button class="manage-btn mbtn-save" style="width:100%;" onclick="saveBillCfg()">&#9989; بل سیٹنگ محفوظ کریں</button>
+    </div>
+
+    <!-- ═══ PRINT LAYOUT SETTINGS — یہاں ایک بار سیٹ کریں، ہر پرنٹ خودکار اسی طرح آئے گا۔
+         سپیڈی بلنگ کے دوران یہ آپشنز کہیں نظر نہیں آتیں — صرف یہاں سیٹنگز میں ═══ -->
+    <div class="settings-card">
+      <h3>🖨️ Print Layout Settings</h3>
+      <div style="font-size:11px;color:#a06020;font-weight:bold;margin-bottom:10px;">
+        یہاں ایک بار سیٹ کریں — ہر بل اسی لے آؤٹ میں پرنٹ ہوگا، جب تک آپ خود یہاں آ کر تبدیل نہ کریں۔
+        روزمرہ کی تیز بلنگ کے دوران یہ آپشنز نہیں دکھائی جاتیں۔
+      </div>
+
+      <!-- لائیو پریویو -->
+      <div style="text-align:center;background:#fff;border:1.5px solid #ffe0b2;border-radius:12px;padding:10px;margin-bottom:12px;">
+        <div style="font-size:10px;color:#a06020;font-weight:bold;margin-bottom:6px;">📋 لائیو پریویو</div>
+        <img id="printLayoutPreviewImg" style="max-width:100%;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,0.15);">
+      </div>
+
+      <!-- فونٹ سلیکشن -->
+      <label style="font-size:10px;font-weight:bold;color:#a06020;">🔤 فونٹ</label>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:10px;">
+        <button id="imgfBtn0" onclick="setImgFont('arial-black');refreshPrintLayoutPreview()" style="padding:7px 2px;border-radius:8px;border:1.5px solid #ffcc80;background:#fff;color:#ef6c00;font-size:10px;font-weight:900;cursor:pointer;">Arial Black</button>
+        <button id="imgfBtn1" onclick="setImgFont('arial');refreshPrintLayoutPreview()" style="padding:7px 2px;border-radius:8px;border:1.5px solid #ffcc80;background:#fff;color:#ef6c00;font-size:10px;font-weight:900;cursor:pointer;">Arial</button>
+        <button id="imgfBtn2" onclick="setImgFont('arial-narrow');refreshPrintLayoutPreview()" style="padding:7px 2px;border-radius:8px;border:1.5px solid #ffcc80;background:#fff;color:#ef6c00;font-size:10px;font-weight:900;cursor:pointer;">Narrow</button>
+        <button id="imgfBtn3" onclick="setImgFont('urdu');refreshPrintLayoutPreview()" style="padding:7px 2px;border-radius:8px;border:1.5px solid #ffcc80;background:#fff;color:#ef6c00;font-size:10px;font-weight:900;cursor:pointer;">اردو</button>
+      </div>
+
+      <!-- تھیم رنگ -->
+      <label style="font-size:10px;font-weight:bold;color:#a06020;">🎨 بل تھیم رنگ</label>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:10px;">
+        <button id="bthBtn0" onclick="setBillTheme('classic');refreshPrintLayoutPreview()" style="padding:7px 2px;border-radius:8px;border:1.5px solid #999;background:#fff;color:#333;font-size:10px;font-weight:900;cursor:pointer;">Classic</button>
+        <button id="bthBtn1" onclick="setBillTheme('saffron');refreshPrintLayoutPreview()" style="padding:7px 2px;border-radius:8px;border:1.5px solid #ffcc80;background:#fff3e0;color:#e65100;font-size:10px;font-weight:900;cursor:pointer;">Saffron</button>
+        <button id="bthBtn2" onclick="setBillTheme('emerald');refreshPrintLayoutPreview()" style="padding:7px 2px;border-radius:8px;border:1.5px solid #a5d6a7;background:#e8f5e9;color:#1b5e20;font-size:10px;font-weight:900;cursor:pointer;">Emerald</button>
+        <button id="bthBtn3" onclick="setBillTheme('royal');refreshPrintLayoutPreview()" style="padding:7px 2px;border-radius:8px;border:1.5px solid #ce93d8;background:#f3e5f5;color:#4a148c;font-size:10px;font-weight:900;cursor:pointer;">Royal</button>
+      </div>
+
+      <!-- آئٹم سیدھ (Alignment) -->
+      <label style="font-size:10px;font-weight:bold;color:#a06020;">↔️ آئٹم کے نام کی سیدھ</label>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px;">
+        <button id="alignBtnLeft" onclick="setItemAlign('left')" style="padding:8px;border-radius:8px;border:1.5px solid #ef6c00;background:#ef6c00;color:#fff;font-size:11px;font-weight:900;cursor:pointer;">⬅️ بائیں (Left)</button>
+        <button id="alignBtnCenter" onclick="setItemAlign('center')" style="padding:8px;border-radius:8px;border:1.5px solid #ef6c00;background:#fff;color:#ef6c00;font-size:11px;font-weight:900;cursor:pointer;">⏺️ درمیان (Center)</button>
+      </div>
+
+      <!-- بولڈ آئٹمز -->
+      <label style="font-size:10px;font-weight:bold;color:#a06020;">🔠 آئٹمز کی موٹائی</label>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px;">
+        <button id="boldBtnOn" onclick="setBoldItems(true)" style="padding:8px;border-radius:8px;border:1.5px solid #ef6c00;background:#ef6c00;color:#fff;font-size:11px;font-weight:900;cursor:pointer;">🔲 بولڈ</button>
+        <button id="boldBtnOff" onclick="setBoldItems(false)" style="padding:8px;border-radius:8px;border:1.5px solid #ef6c00;background:#fff;color:#ef6c00;font-size:11px;font-weight:400;cursor:pointer;">▫️ باریک</button>
+      </div>
+
+      <!-- رو ہائٹ -->
+      <label style="font-size:10px;font-weight:bold;color:#a06020;">↕️ رو (Row) کی اونچائی</label>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+        <span style="font-size:11px;color:#a06020;">چھوٹا</span>
+        <input type="range" id="rowScaleSlider" min="70" max="150" step="5" value="100" oninput="changeRowScale(this.value)" style="flex:1;">
+        <span style="font-size:14px;color:#a06020;">بڑا</span>
+      </div>
+      <div style="text-align:center;font-weight:bold;color:#ef6c00;margin-bottom:10px;"><span id="rowScaleLabel">100%</span></div>
+
+      <!-- پرنٹ فونٹ سائز سکیل -->
+      <label style="font-size:10px;font-weight:bold;color:#a06020;">🔍 پرنٹ لکھائی کا سائز</label>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+        <span style="font-size:11px;color:#a06020;">A</span>
+        <input type="range" id="printFontScaleSlider" min="85" max="130" step="5" value="100" oninput="changePrintFontScale(this.value)" style="flex:1;">
+        <span style="font-size:18px;color:#a06020;">A</span>
+      </div>
+      <div style="text-align:center;font-weight:bold;color:#ef6c00;margin-bottom:10px;"><span id="printFontScaleLabel">100%</span></div>
+
+      <!-- انوائس سٹائل -->
+      <label style="font-size:10px;font-weight:bold;color:#a06020;">📄 پرنٹ/شیئر سٹائل</label>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px;">
+        <button id="invStyleThermal" onclick="setInvoiceStyle('thermal')" style="padding:8px;border-radius:8px;border:1.5px solid #1565c0;background:#1565c0;color:#fff;font-size:11px;font-weight:900;cursor:pointer;">🧾 تھرمل رسید</button>
+        <button id="invStyleA4" onclick="setInvoiceStyle('a4')" style="padding:8px;border-radius:8px;border:1.5px solid #1565c0;background:#fff;color:#1565c0;font-size:11px;font-weight:900;cursor:pointer;">📄 A4 سٹائل</button>
+      </div>
+
+      <!-- ٹیسٹ شیئر بٹن -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <button onclick="testShareWhatsApp()" style="padding:10px 6px;border:none;border-radius:10px;background:linear-gradient(135deg,#25d366,#128c45);color:#fff;font-size:12px;font-weight:900;cursor:pointer;">📤 ٹیسٹ واٹس ایپ</button>
+        <button onclick="testSaveImage()" style="padding:10px 6px;border:none;border-radius:10px;background:linear-gradient(135deg,#6a1b9a,#9c27b0);color:#fff;font-size:12px;font-weight:900;cursor:pointer;">🖼️ ٹیسٹ سیو امیج</button>
+      </div>
     </div>
 
     <!-- ٹیبل سیٹنگ کارڈ ہٹا دیا گیا — ٹیبل سسٹم مکمل طور پر ختم، صرف Counter استعمال ہوتا ہے -->
@@ -4635,6 +4714,11 @@ function getBillCfg(){
     zoom:     100,
     paperWidth: 58,   // 58 یا 80 (mm) — Direct Bluetooth راسٹر پرنٹ کے لیے صحیح چوڑائی منتخب کرنے کو
     printMode: 'image', // 'image' = اصل فونٹ/سائز کے ساتھ (بھاری، تھوڑا سست) | 'text' = ہلکا/تیز (کمزور پرنٹرز کے لیے محفوظ)
+    itemAlign: 'left',      // 'left' | 'center' — آئٹم کے نام کی سیدھ (صرف Print Layout Settings سے بدلتی ہے)
+    boldItems: true,        // آئٹمز بولڈ ہوں یا باریک
+    rowScale: 100,          // 70–150 (%) — ہر رو (row) کی اونچائی
+    printFontScale: 100,    // 85–130 (%) — پورے بل کی لکھائی کا سائز
+    invoiceStyle: 'thermal',// 'thermal' | 'a4' — عام تھرمل رسید یا A4 پیج سٹائل شیئر/پرنٹ
   }));
 }
 function buildBillHtml(sale){
@@ -4989,6 +5073,155 @@ function _applyBillFontSize(){
   }
 }
 
+// ============================================================
+// PRINT LAYOUT SETTINGS — align/bold/row-height/font-scale/invoice-style
+// ایک بار سیٹ کریں، ہر پرنٹ خودکار اسی طرح آئے گا (Settings میں)
+// ============================================================
+function _sampleSaleForPreview(){
+  return {
+    invNo: 'PREVIEW',
+    table: 'C',
+    mode: 'cash',
+    dateStr: new Date().toLocaleString('en-PK'),
+    items: [
+      {name:'Zinger Burger', qty:2, price:450, total:900},
+      {name:'Chicken Pizza', qty:1, price:1200, total:1200},
+      {name:'Cold Drink 1.5L', qty:1, price:150, total:150},
+    ],
+    total: 2250
+  };
+}
+
+async function refreshPrintLayoutPreview(){
+  try{
+    const canvas = _wrapCanvasAsA4Card(await _buildBillCanvas(_sampleSaleForPreview()));
+    const img = document.getElementById('printLayoutPreviewImg');
+    if(img) img.src = canvas.toDataURL('image/png');
+  }catch(e){ /* preview صرف سہولت کے لیے ہے، ناکامی نظرانداز */ }
+}
+
+function setItemAlign(align){
+  const cfg = getBillCfg();
+  cfg.itemAlign = align;
+  localStorage.setItem('ff_bill_cfg', JSON.stringify(cfg));
+  const bL = document.getElementById('alignBtnLeft');
+  const bC = document.getElementById('alignBtnCenter');
+  if(bL && bC){
+    if(align==='center'){
+      bC.style.background='#ef6c00'; bC.style.color='#fff';
+      bL.style.background='#fff';    bL.style.color='#ef6c00';
+    } else {
+      bL.style.background='#ef6c00'; bL.style.color='#fff';
+      bC.style.background='#fff';    bC.style.color='#ef6c00';
+    }
+  }
+  refreshPrintLayoutPreview();
+}
+
+function setBoldItems(bold){
+  const cfg = getBillCfg();
+  cfg.boldItems = bold;
+  localStorage.setItem('ff_bill_cfg', JSON.stringify(cfg));
+  const bOn = document.getElementById('boldBtnOn');
+  const bOff = document.getElementById('boldBtnOff');
+  if(bOn && bOff){
+    if(bold){
+      bOn.style.background='#ef6c00';  bOn.style.color='#fff';
+      bOff.style.background='#fff';    bOff.style.color='#ef6c00';
+    } else {
+      bOff.style.background='#ef6c00'; bOff.style.color='#fff';
+      bOn.style.background='#fff';     bOn.style.color='#ef6c00';
+    }
+  }
+  refreshPrintLayoutPreview();
+}
+
+function changeRowScale(val){
+  const cfg = getBillCfg();
+  cfg.rowScale = parseInt(val);
+  localStorage.setItem('ff_bill_cfg', JSON.stringify(cfg));
+  const lbl = document.getElementById('rowScaleLabel');
+  if(lbl) lbl.textContent = val + '%';
+  refreshPrintLayoutPreview();
+}
+
+function changePrintFontScale(val){
+  const cfg = getBillCfg();
+  cfg.printFontScale = parseInt(val);
+  localStorage.setItem('ff_bill_cfg', JSON.stringify(cfg));
+  const lbl = document.getElementById('printFontScaleLabel');
+  if(lbl) lbl.textContent = val + '%';
+  refreshPrintLayoutPreview();
+}
+
+function setInvoiceStyle(style){
+  const cfg = getBillCfg();
+  cfg.invoiceStyle = style;
+  localStorage.setItem('ff_bill_cfg', JSON.stringify(cfg));
+  const bT = document.getElementById('invStyleThermal');
+  const bA = document.getElementById('invStyleA4');
+  if(bT && bA){
+    if(style==='a4'){
+      bA.style.background='#1565c0'; bA.style.color='#fff';
+      bT.style.background='#fff';    bT.style.color='#1565c0';
+    } else {
+      bT.style.background='#1565c0'; bT.style.color='#fff';
+      bA.style.background='#fff';    bA.style.color='#1565c0';
+    }
+  }
+}
+
+async function testShareWhatsApp(){
+  try{
+    const canvas = _wrapCanvasAsA4Card(await _buildBillCanvas(_sampleSaleForPreview()));
+    const blob = await new Promise(r=>canvas.toBlob(r,'image/png'));
+    const file = new File([blob],'sample-bill.png',{type:'image/png'});
+    if(navigator.canShare&&navigator.canShare({files:[file]})){
+      await navigator.share({files:[file], title:'Sample Bill', text:''});
+    } else {
+      window.open('https://wa.me/?text='+encodeURIComponent('Sample Bill Preview'),'_blank');
+    }
+  }catch(e){
+    if(e.name!=='AbortError') showToast('شیئر نہ ہو سکا');
+  }
+}
+
+async function testSaveImage(){
+  try{
+    const canvas = _wrapCanvasAsA4Card(await _buildBillCanvas(_sampleSaleForPreview()));
+    const a = document.createElement('a');
+    a.href = canvas.toDataURL('image/png');
+    a.download = 'Sample_Bill_Layout.png';
+    a.click();
+    showToast('🖼️ سیمپل بل تصویر محفوظ ہو گئی');
+  }catch(e){
+    showToast('تصویر محفوظ نہ ہو سکی');
+  }
+}
+
+function initPrintLayoutSettingsUI(){
+  const cfg = getBillCfg();
+  setImgFont(_imgFont);
+  renderBillThemeBtns();
+  setItemAlign(cfg.itemAlign || 'left');
+  setBoldItems(cfg.boldItems !== false);
+  const rs = cfg.rowScale || 100;
+  const rsSlider = document.getElementById('rowScaleSlider');
+  if(rsSlider) rsSlider.value = rs;
+  const rsLbl = document.getElementById('rowScaleLabel');
+  if(rsLbl) rsLbl.textContent = rs + '%';
+  const pfs = cfg.printFontScale || 100;
+  const pfsSlider = document.getElementById('printFontScaleSlider');
+  if(pfsSlider) pfsSlider.value = pfs;
+  const pfsLbl = document.getElementById('printFontScaleLabel');
+  if(pfsLbl) pfsLbl.textContent = pfs + '%';
+  setInvoiceStyle(cfg.invoiceStyle || 'thermal');
+  refreshPrintLayoutPreview();
+}
+document.addEventListener('DOMContentLoaded', function(){
+  setTimeout(initPrintLayoutSettingsUI, 300);
+});
+
 function _getFontFamily(id){
   if(id==='arial-black')  return "'Arial Black', Arial, sans-serif";
   if(id==='arial-narrow') return "'Arial Narrow', Arial, sans-serif";
@@ -5005,6 +5238,14 @@ function _buildBillCanvas(sale){
     const items   = sale.items || [];
     const isUrdu  = _imgFont === 'urdu';
     const fontFam = _getFontFamily(_imgFont);
+
+    // ═══ پرنٹ لے آؤٹ سیٹنگز — Settings کی Print Layout سکرین سے ═══
+    const _pAlign   = cfg.itemAlign || 'left';        // 'left' | 'center'
+    const _pBold    = cfg.boldItems !== false;         // true/false
+    const _rowScale = (cfg.rowScale || 100) / 100;
+    const _fScale   = (cfg.printFontScale || 100) / 100;
+    const sz = (n) => Math.round(n * _fScale);
+    const _itemWeight = _pBold ? '900' : '400';
 
     // اردو فونٹ لوڈ کریں اگر منتخب ہو
     const fontPromise = (isUrdu && document.fonts && document.fonts.load)
@@ -5041,7 +5282,7 @@ function _buildBillCanvas(sale){
     const C_BORDER   = TC.border;
 
     // ===== اونچائی کا اندازہ =====
-    const ROW_H   = 38;
+    const ROW_H   = Math.round(38 * _rowScale);
     const HEAD_H  = isUrdu ? 160 : 140;
     const META_H  = 60;
     const TBL_H   = ROW_H * (items.length + 1) + 16;
@@ -5081,18 +5322,18 @@ function _buildBillCanvas(sale){
 
     // اوپر emoji + نام
     let hy = 22;
-    ctx.font = isUrdu ? `700 28px ${fontFam}` : `900 32px ${fontFam}`;
+    ctx.font = isUrdu ? `700 ${sz(28)}px ${fontFam}` : `900 ${sz(32)}px ${fontFam}`;
     ctx.fillText('🍔  ' + (cfg.shopName || 'FAST FOOD POS'), W/2, hy);
     hy += isUrdu ? 42 : 44;
 
     if(cfg.subHead){
-      ctx.font = `400 16px ${fontFam}`;
+      ctx.font = `400 ${sz(16)}px ${fontFam}`;
       ctx.fillStyle = 'rgba(255,255,255,0.88)';
       ctx.fillText(cfg.subHead, W/2, hy);
       hy += 22;
     }
     if(cfg.phone){
-      ctx.font = `700 15px ${fontFam}`;
+      ctx.font = `700 ${sz(15)}px ${fontFam}`;
       ctx.fillStyle = 'rgba(255,255,255,0.85)';
       ctx.fillText('📞  ' + cfg.phone, W/2, hy);
       hy += 22;
@@ -5109,12 +5350,12 @@ function _buildBillCanvas(sale){
     const invLabel  = isUrdu ? 'بل نمبر' : 'Inv#';
 
     ctx.fillStyle = C_DARK;
-    ctx.font = isUrdu ? `700 16px ${fontFam}` : `900 16px ${fontFam}`;
+    ctx.font = isUrdu ? `700 ${sz(16)}px ${fontFam}` : `900 ${sz(16)}px ${fontFam}`;
     ctx.textAlign = 'center';
     ctx.fillText(invLabel + ' ' + (sale.invNo||'—') + '   |   ' + tName, W/2, my);
     my += 24;
 
-    ctx.font = `400 13px ${fontFam}`;
+    ctx.font = `400 ${sz(13)}px ${fontFam}`;
     ctx.fillStyle = C_GRAY;
     const dateStr = isUrdu
       ? new Date(sale.id||Date.now()).toLocaleDateString('en-PK',{weekday:'long',day:'numeric',month:'long',year:'numeric'})
@@ -5149,12 +5390,12 @@ function _buildBillCanvas(sale){
     ctx.fillRect(PAD, hdrTop, iW, hdrH);
 
     ctx.fillStyle = C_WHITE;
-    ctx.font = isUrdu ? `700 14px ${fontFam}` : `900 13px ${fontFam}`;
+    ctx.font = isUrdu ? `700 ${sz(14)}px ${fontFam}` : `${_itemWeight} ${sz(13)}px ${fontFam}`;
     cols.forEach((c,i)=>{
-      const align = (c.k==='item') ? (isUrdu?'right':'left') : 'center';
+      const align = (c.k==='item') ? (isUrdu?'right':_pAlign) : 'center';
       ctx.textAlign = align;
       const tx = c.k==='item'
-        ? (isUrdu ? colX[i]+iW*c.w-6 : colX[i]+6)
+        ? (isUrdu ? colX[i]+iW*c.w-6 : (align==='center' ? colX[i]+iW*c.w/2 : colX[i]+6))
         : colX[i] + iW*c.w/2;
       ctx.fillText(hdrs[i], tx, hdrTop + hdrH/2 - 7);
     });
@@ -5168,7 +5409,7 @@ function _buildBillCanvas(sale){
       ctx.fillRect(PAD, rowTop, iW, ROW_H);
 
       ctx.fillStyle = C_DARK;
-      ctx.font = isUrdu ? `700 14px ${fontFam}` : `900 13px ${fontFam}`;
+      ctx.font = isUrdu ? `700 ${sz(14)}px ${fontFam}` : `${_itemWeight} ${sz(13)}px ${fontFam}`;
 
       cols.forEach((c,i)=>{
         let val='';
@@ -5178,10 +5419,10 @@ function _buildBillCanvas(sale){
         if(c.k==='price') val = 'Rs.'+it.price;
         if(c.k==='total') val = 'Rs.'+it.total;
 
-        const align = (c.k==='item') ? (isUrdu?'right':'left') : 'center';
+        const align = (c.k==='item') ? (isUrdu?'right':_pAlign) : 'center';
         ctx.textAlign = align;
         const tx = c.k==='item'
-          ? (isUrdu ? colX[i]+iW*c.w-6 : colX[i]+6)
+          ? (isUrdu ? colX[i]+iW*c.w-6 : (align==='center' ? colX[i]+iW*c.w/2 : colX[i]+6))
           : colX[i] + iW*c.w/2;
         ctx.fillText(val, tx, rowTop + ROW_H/2 - 7);
       });
@@ -5237,11 +5478,11 @@ function _buildBillCanvas(sale){
 
     ctx.fillStyle = TC.totLabel;
     ctx.textAlign = 'center';
-    ctx.font = isUrdu ? `700 16px ${fontFam}` : `900 15px ${fontFam}`;
+    ctx.font = isUrdu ? `700 ${sz(16)}px ${fontFam}` : `900 ${sz(15)}px ${fontFam}`;
     ctx.fillText(totLabel, W/2, ty+14);
 
     ctx.fillStyle = '#fff';
-    ctx.font = isUrdu ? `700 38px ${fontFam}` : `900 40px ${fontFam}`;
+    ctx.font = isUrdu ? `700 ${sz(38)}px ${fontFam}` : `900 ${sz(40)}px ${fontFam}`;
     ctx.fillText('Rs. ' + sale.total, W/2, ty+32);
 
     ty += TOT_H + 14;
@@ -5267,7 +5508,7 @@ function _buildBillCanvas(sale){
     ctx.textAlign = 'center';
     const ftStart = ty + (FOOT_H - ftLines.length*22) / 2;
     ftLines.forEach((fl,i)=>{
-      ctx.font = isUrdu ? `700 16px ${fontFam}` : `900 15px ${fontFam}`;
+      ctx.font = isUrdu ? `700 ${sz(16)}px ${fontFam}` : `900 ${sz(15)}px ${fontFam}`;
       ctx.fillText(fl, W/2, ftStart + i*24);
     });
 
@@ -5281,10 +5522,32 @@ function _buildBillCanvas(sale){
   });
 }
 
+// انوائس سٹائل 'a4' ہو تو شیئر/سیو تصویر کے لیے ایک باقاعدہ، بارڈر والا کارڈ لے آؤٹ بنائیں
+// (نوٹ: یہ صرف تصویر/شیئر پر لاگو ہوتا ہے — تھرمل Bluetooth پرنٹ ہمیشہ رسید کی چوڑائی پر ہی رہے گا،
+// چونکہ تھرمل پرنٹر فزیکل طور پر A4 صفحہ پرنٹ نہیں کر سکتا)
+function _wrapCanvasAsA4Card(sourceCanvas){
+  const cfg = getBillCfg();
+  if((cfg.invoiceStyle||'thermal') !== 'a4') return sourceCanvas;
+  const margin = 40;
+  const out = document.createElement('canvas');
+  out.width  = sourceCanvas.width + margin*2;
+  out.height = sourceCanvas.height + margin*2;
+  const octx = out.getContext('2d');
+  octx.fillStyle = '#eef1f6';
+  octx.fillRect(0, 0, out.width, out.height);
+  octx.fillStyle = '#ffffff';
+  octx.strokeStyle = '#ccc';
+  octx.lineWidth = 2;
+  octx.fillRect(margin-10, margin-10, sourceCanvas.width+20, sourceCanvas.height+20);
+  octx.strokeRect(margin-10, margin-10, sourceCanvas.width+20, sourceCanvas.height+20);
+  octx.drawImage(sourceCanvas, margin, margin);
+  return out;
+}
+
 async function shareOnWhatsApp(){
   if(!pendingSale||!pendingSale.mode){ showToast('پہلے CASH یا CARD منتخب کریں'); return; }
   try{
-    const canvas = await _buildBillCanvas(pendingSale);
+    const canvas = _wrapCanvasAsA4Card(await _buildBillCanvas(pendingSale));
     const blob = await new Promise(r=>canvas.toBlob(r,'image/png'));
     const file = new File([blob],'bill.png',{type:'image/png'});
     if(navigator.canShare&&navigator.canShare({files:[file]})){
@@ -5302,7 +5565,7 @@ async function shareOnWhatsApp(){
 async function saveBillImage(){
   if(!pendingSale||!pendingSale.mode){ showToast('پہلے CASH یا CARD منتخب کریں'); return; }
   try{
-    const canvas = await _buildBillCanvas(pendingSale);
+    const canvas = _wrapCanvasAsA4Card(await _buildBillCanvas(pendingSale));
     const a = document.createElement('a');
     a.href = canvas.toDataURL('image/png');
     a.download = 'Bill_'+( pendingSale.invNo||Date.now())+'.png';
@@ -7497,7 +7760,7 @@ document.addEventListener('DOMContentLoaded', function(){
 // 1 نمبر بڑھایا جائے گا: FF001, FF002, FF003 ...
 // یہ Online/Offline انڈیکیٹر کے نیچے دکھایا جاتا ہے۔
 // ============================================================
-const FF_BUILD_NO = 'FF003';
+const FF_BUILD_NO = 'FF004';
 document.addEventListener('DOMContentLoaded', function(){
   const el = document.getElementById('netStatusVersion');
   if(el) el.textContent = FF_BUILD_NO;
