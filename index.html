@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FFPOS267SU0814</title>
+<title>FFPOS267SU0834</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#e65100">
 <meta name="mobile-web-app-capable" content="yes">
@@ -1927,6 +1927,18 @@
           style="padding:5px 12px;border-radius:8px;border:1.5px solid #ef6c00;background:#ef6c00;color:#fff;font-weight:900;font-size:12px;cursor:pointer;">58mm</button>
         <button id="pmPaper80" class="pmodal-paper-btn" onclick="setPaperWidth(80)"
           style="padding:5px 12px;border-radius:8px;border:1.5px solid #ef6c00;background:transparent;color:#ef6c00;font-weight:900;font-size:12px;cursor:pointer;">80mm</button>
+      </div>
+
+      <!-- ═══ پرنٹ موڈ — تصویر (اصل فونٹ، بھاری/سست) بمقابلہ متن (ہلکا/تیز، کمزور پرنٹرز کے لیے) ═══ -->
+      <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin:0 0 10px;">
+        <span style="font-size:11px;color:#888;font-weight:bold;">🖨️ موڈ:</span>
+        <button id="pmModeImage" class="pmodal-mode-btn" onclick="setPrintMode('image')"
+          style="padding:5px 10px;border-radius:8px;border:1.5px solid #1565c0;background:#1565c0;color:#fff;font-weight:900;font-size:11px;cursor:pointer;">🖼️ اصل فونٹ</button>
+        <button id="pmModeText" class="pmodal-mode-btn" onclick="setPrintMode('text')"
+          style="padding:5px 10px;border-radius:8px;border:1.5px solid #1565c0;background:transparent;color:#1565c0;font-weight:900;font-size:11px;cursor:pointer;">🔤 ہلکا/تیز</button>
+      </div>
+      <div style="text-align:center;font-size:10px;color:#999;margin:-4px 0 10px;padding:0 10px;line-height:1.6;">
+        کمزور/سستے BLE پرنٹر میں "🖼️ اصل فونٹ" موڈ سست یا ناکام ہو سکتا ہے — ایسی صورت میں "🔤 ہلکا/تیز" پر سوئچ کریں۔
       </div>
 
       <button class="pmodal-btn pm-connect" id="pmBtnConnect" onclick="connectNewPrinter()">🔵 <span>Connect New Printer</span></button>
@@ -4622,6 +4634,7 @@ function getBillCfg(){
     footer:   'THANK YOU! VISIT AGAIN',
     zoom:     100,
     paperWidth: 58,   // 58 یا 80 (mm) — Direct Bluetooth راسٹر پرنٹ کے لیے صحیح چوڑائی منتخب کرنے کو
+    printMode: 'image', // 'image' = اصل فونٹ/سائز کے ساتھ (بھاری، تھوڑا سست) | 'text' = ہلکا/تیز (کمزور پرنٹرز کے لیے محفوظ)
   }));
 }
 function buildBillHtml(sale){
@@ -5789,7 +5802,47 @@ function setPaperWidth(mm){
 }
 document.addEventListener('DOMContentLoaded', function(){
   setPaperWidth(getBillCfg().paperWidth || 58);
+  setPrintMode(getBillCfg().printMode || 'image');
 });
+
+// ============================================================
+// پرنٹ موڈ سیٹ کریں — 'image' (اصل فونٹ، بھاری) یا 'text' (ہلکا/تیز)
+// ============================================================
+function setPrintMode(mode){
+  const cfg = getBillCfg();
+  cfg.printMode = mode;
+  localStorage.setItem('ff_bill_cfg', JSON.stringify(cfg));
+  const bImg = document.getElementById('pmModeImage');
+  const bTxt = document.getElementById('pmModeText');
+  if(bImg && bTxt){
+    if(mode==='text'){
+      bTxt.style.background='#1565c0'; bTxt.style.color='#fff';
+      bImg.style.background='transparent'; bImg.style.color='#1565c0';
+    } else {
+      bImg.style.background='#1565c0'; bImg.style.color='#fff';
+      bTxt.style.background='transparent'; bTxt.style.color='#1565c0';
+    }
+  }
+}
+
+// بلٹ اِن POS مشین (SUNMI/iMin/PAX/Urovo/Newland/جنرک Android) کے پاس واقعی
+// RAW بائٹس بھیجنے کی صلاحیت ہے یا صرف سادہ ٹیکسٹ پرنٹ (printText) — راسٹر تصویر
+// صرف اسی صورت بھیجیں جب RAW موجود ہو، ورنہ UTF-8 ڈی کوڈ ہونے پر تصویر بے معنی/خراب پرنٹ ہوگی۔
+function hasRawPrintCapability(){
+  const dev = (thermalChar && thermalChar._dev) || _posDeviceName || detectBuiltinPrinter();
+  if(dev === 'SUNMI')    return !!(window.SunmiInnerPrinter && window.SunmiInnerPrinter.sendRawData);
+  if(dev === 'IMIN')     return !!((window.imin && window.imin.sendRawData) || (window.iMin && window.iMin.sendRawData));
+  if(dev === 'PAX')      return !!((window.PAXPrinter && window.PAXPrinter.printRaw) || (window.paxPrinter && window.paxPrinter.print));
+  if(dev === 'UROVO')    return !!(window.PrintService && window.PrintService.printRawData);
+  if(dev === 'NEWLAND')  return !!(window.NLPrinter && window.NLPrinter.printRaw);
+  if(dev === 'ANDROID_POS'){
+    return !!(window.Android && (window.Android.sendRaw || window.Android.printRaw)) ||
+           !!(window.PrintManager && window.PrintManager.print) ||
+           !!(window.JSPrinter && window.JSPrinter.sendData) ||
+           !!(window.EscPosService && window.EscPosService.print);
+  }
+  return false;
+}
 
 // ============================================================
 // بل کینوس کو براہ راست تھرمل پرنٹ کے لیے تیار کریں — AIO POS کے
@@ -5875,25 +5928,32 @@ async function buildBillRasterBytes(sale){
 
 async function sendToBluetooth(sale){
   if(!thermalChar) return false;
+  const cfg = getBillCfg();
+  const wantImage = (cfg.printMode || 'image') === 'image';
 
-  // بل کی راسٹر امیج ایک ہی بار تیار کریں (منتخب فونٹ/سائز/تھیم سمیت)
-  let bytes;
-  try{
-    bytes = await buildBillRasterBytes(sale);
-  }catch(e){
-    showToast('❌ بل تصویر تیار نہ ہو سکی: '+e.message);
-    return false;
-  }
-
-  // ── SUNMI Built-in Printer ──
+  // ── SUNMI/بلٹ اِن POS مشین ──
   if(thermalChar._sunmi){
     try{
+      // راسٹر تصویر صرف اسی وقت بھیجیں جب موڈ 'image' ہو AND مشین واقعی RAW بائٹس لے سکے —
+      // ورنہ سادہ متن بھیجیں (کمزور/محدود بلٹ اِن APIs پر تصویر ڈیکوڈ ہو کر خراب پرنٹ ہو جاتی ہے)۔
+      const useImage = wantImage && hasRawPrintCapability();
+      const bytes = useImage ? await buildBillRasterBytes(sale) : encodeEscPos(sale);
       return await sendToSunmi(bytes);
     }catch(e){
       showToast('❌ SUNMI Print error: '+e.message);
       return false;
     }
   }
+
+  // بل کی راسٹر امیج یا ہلکا متن — یوزر کے منتخب کردہ پرنٹ موڈ کے مطابق
+  let bytes;
+  try{
+    bytes = wantImage ? await buildBillRasterBytes(sale) : encodeEscPos(sale);
+  }catch(e){
+    showToast('❌ بل تصویر تیار نہ ہو سکی: '+e.message);
+    return false;
+  }
+
   // GOOJPRT / PT-210 جیسے 58mm پرنٹرز کا BLE MTU صرف 20 bytes ہوتا ہے۔
   // writeValueWithoutResponse بغیر تصدیق کے چلا جاتا ہے — پرنٹر کا buffer بھر کر
   // درمیان میں خاموشی سے رک جاتا ہے۔
@@ -7437,7 +7497,7 @@ document.addEventListener('DOMContentLoaded', function(){
 // 1 نمبر بڑھایا جائے گا: FF001, FF002, FF003 ...
 // یہ Online/Offline انڈیکیٹر کے نیچے دکھایا جاتا ہے۔
 // ============================================================
-const FF_BUILD_NO = 'FF002';
+const FF_BUILD_NO = 'FF003';
 document.addEventListener('DOMContentLoaded', function(){
   const el = document.getElementById('netStatusVersion');
   if(el) el.textContent = FF_BUILD_NO;
