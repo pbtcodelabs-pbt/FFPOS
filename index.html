@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FFPOS267SU0718</title>
+<title>FFPOS267SU0814</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#e65100">
 <meta name="mobile-web-app-capable" content="yes">
@@ -1919,6 +1919,15 @@
       </div>
       <div class="pmodal-name" id="pmName">Not Connected</div>
       <div class="pmodal-sub" id="pmSub">Bluetooth پرنٹر کنیکٹ کرنے کے لیے نیچے بٹن دبائیں</div>
+
+      <!-- ═══ کاغذ کی چوڑائی — Direct Bluetooth راسٹر پرنٹ کے لیے ═══ -->
+      <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin:6px 0 10px;">
+        <span style="font-size:11px;color:#888;font-weight:bold;">📏 کاغذ:</span>
+        <button id="pmPaper58" class="pmodal-paper-btn" onclick="setPaperWidth(58)"
+          style="padding:5px 12px;border-radius:8px;border:1.5px solid #ef6c00;background:#ef6c00;color:#fff;font-weight:900;font-size:12px;cursor:pointer;">58mm</button>
+        <button id="pmPaper80" class="pmodal-paper-btn" onclick="setPaperWidth(80)"
+          style="padding:5px 12px;border-radius:8px;border:1.5px solid #ef6c00;background:transparent;color:#ef6c00;font-weight:900;font-size:12px;cursor:pointer;">80mm</button>
+      </div>
 
       <button class="pmodal-btn pm-connect" id="pmBtnConnect" onclick="connectNewPrinter()">🔵 <span>Connect New Printer</span></button>
       <button class="pmodal-btn pm-recon" id="pmBtnRecon" style="display:none;" onclick="reconnectSavedPrinter()">🔄 <span>Reconnect</span></button>
@@ -4612,6 +4621,7 @@ function getBillCfg(){
     phone:    '',
     footer:   'THANK YOU! VISIT AGAIN',
     zoom:     100,
+    paperWidth: 58,   // 58 یا 80 (mm) — Direct Bluetooth راسٹر پرنٹ کے لیے صحیح چوڑائی منتخب کرنے کو
   }));
 }
 function buildBillHtml(sale){
@@ -5758,13 +5768,127 @@ function encodeEscPos(sale){
   return out;
 }
 
+// ============================================================
+// کاغذ کی چوڑائی سیٹ کریں (58mm/80mm) — راسٹر پرنٹ کی چوڑائی کا تعین کرتا ہے
+// ============================================================
+function setPaperWidth(mm){
+  const cfg = getBillCfg();
+  cfg.paperWidth = mm;
+  localStorage.setItem('ff_bill_cfg', JSON.stringify(cfg));
+  const b58 = document.getElementById('pmPaper58');
+  const b80 = document.getElementById('pmPaper80');
+  if(b58 && b80){
+    if(mm===80){
+      b80.style.background='#ef6c00'; b80.style.color='#fff';
+      b58.style.background='transparent'; b58.style.color='#ef6c00';
+    } else {
+      b58.style.background='#ef6c00'; b58.style.color='#fff';
+      b80.style.background='transparent'; b80.style.color='#ef6c00';
+    }
+  }
+}
+document.addEventListener('DOMContentLoaded', function(){
+  setPaperWidth(getBillCfg().paperWidth || 58);
+});
+
+// ============================================================
+// بل کینوس کو براہ راست تھرمل پرنٹ کے لیے تیار کریں — AIO POS کے
+// طریقے پر: کینوس → مطلوبہ کاغذ چوڑائی (384/576 dots) پر scale →
+// سیاہ/سفید → ESC/POS راسٹر امیج (GS v 0)۔ اسی لیے پرنٹ بالکل ویسا
+// ہی آتا ہے جیسا سکرین پر منتخب کردہ فونٹ/سائز کے ساتھ نظر آتا ہے —
+// پرنٹر کے اپنے بلٹ اِن فونٹ پر انحصار ختم۔
+// ============================================================
+function scaleCanvasToWidth(sourceCanvas, targetWidth){
+  const scale = targetWidth / sourceCanvas.width;
+  const targetHeight = Math.max(1, Math.round(sourceCanvas.height * scale));
+  const out = document.createElement('canvas');
+  out.width = targetWidth; out.height = targetHeight;
+  const octx = out.getContext('2d');
+  octx.fillStyle = '#ffffff';
+  octx.fillRect(0,0,targetWidth,targetHeight);
+  octx.drawImage(sourceCanvas, 0, 0, targetWidth, targetHeight);
+  return out;
+}
+
+function canvasToGrayscale(sourceCanvas){
+  const gray = document.createElement('canvas');
+  gray.width = sourceCanvas.width;
+  gray.height = sourceCanvas.height;
+  const gctx = gray.getContext('2d');
+  gctx.drawImage(sourceCanvas, 0, 0);
+  const imgData = gctx.getImageData(0, 0, gray.width, gray.height);
+  const d = imgData.data;
+  for(let i = 0; i < d.length; i += 4){
+    const lum = Math.round(0.299*d[i] + 0.587*d[i+1] + 0.114*d[i+2]);
+    d[i] = d[i+1] = d[i+2] = lum;
+  }
+  gctx.putImageData(imgData, 0, 0);
+  return gray;
+}
+
+// ---------- کینوس کو ESC/POS "raster image" کمانڈز میں بدلیں (GS v 0) — تھرمل پرنٹر کی زبان ----------
+function canvasToEscPosRaster(canvas, paperWidthMM){
+  const widthDots = paperWidthMM === 80 ? 576 : 384;
+  const heightDots = canvas.height;
+  const ctx = canvas.getContext('2d');
+  const imgData = ctx.getImageData(0, 0, widthDots, heightDots).data;
+  const widthBytes = Math.ceil(widthDots / 8);
+  const raster = new Uint8Array(widthBytes * heightDots);
+
+  for(let y = 0; y < heightDots; y++){
+    for(let x = 0; x < widthDots; x++){
+      const idx = (y * widthDots + x) * 4;
+      const brightness = (imgData[idx] + imgData[idx+1] + imgData[idx+2]) / 3;
+      const isBlack = imgData[idx+3] > 0 && brightness < 180;
+      if(isBlack){
+        const byteIndex = y * widthBytes + Math.floor(x / 8);
+        const bitIndex = 7 - (x % 8);
+        raster[byteIndex] |= (1 << bitIndex);
+      }
+    }
+  }
+
+  const xL = widthBytes & 0xFF, xH = (widthBytes >> 8) & 0xFF;
+  const yL = heightDots & 0xFF, yH = (heightDots >> 8) & 0xFF;
+  const initCmd = new Uint8Array([0x1B, 0x40]); // ESC @ — پرنٹر ری سیٹ
+  const header = new Uint8Array([0x1D, 0x76, 0x30, 0x00, xL, xH, yL, yH]); // GS v 0 — راسٹر امیج ہیڈر
+  const feedCmd = new Uint8Array([0x0A, 0x0A, 0x0A, 0x0A]); // کاغذ آگے بڑھائیں
+
+  const result = new Uint8Array(initCmd.length + header.length + raster.length + feedCmd.length);
+  result.set(initCmd, 0);
+  result.set(header, initCmd.length);
+  result.set(raster, initCmd.length + header.length);
+  result.set(feedCmd, initCmd.length + header.length + raster.length);
+  return result;
+}
+
+// بل کے پورے راسٹر بائٹس ایک ہی جگہ تیار کریں — sendToBluetooth اسی کو استعمال کرے گا
+async function buildBillRasterBytes(sale){
+  const cfg = getBillCfg();
+  const paperWidthMM = cfg.paperWidth || 58;
+  const widthDots = paperWidthMM === 80 ? 576 : 384;
+  const billCanvas = await _buildBillCanvas(sale);
+  const scaled = scaleCanvasToWidth(billCanvas, widthDots);
+  const gray = canvasToGrayscale(scaled);
+  return canvasToEscPosRaster(gray, paperWidthMM);
+}
+
 async function sendToBluetooth(sale){
   if(!thermalChar) return false;
+
+  // بل کی راسٹر امیج ایک ہی بار تیار کریں (منتخب فونٹ/سائز/تھیم سمیت)
+  let bytes;
+  try{
+    bytes = await buildBillRasterBytes(sale);
+  }catch(e){
+    showToast('❌ بل تصویر تیار نہ ہو سکی: '+e.message);
+    return false;
+  }
+
   // ── SUNMI Built-in Printer ──
   if(thermalChar._sunmi){
     try{
-      const data = encodeEscPos(sale);
-      return await sendToSunmi(data);
+      return await sendToSunmi(bytes);
     }catch(e){
       showToast('❌ SUNMI Print error: '+e.message);
       return false;
@@ -5783,7 +5907,7 @@ async function sendToBluetooth(sale){
 
   for(let attempt=0; attempt<=MAX_RETRIES; attempt++){
     try{
-      const data=encodeEscPos(sale);
+      const data=bytes;
       for(let i=0;i<data.length;i+=CHUNK){
         const chunk=data.slice(i,i+CHUNK);
         if(useConfirmed){
@@ -7313,7 +7437,7 @@ document.addEventListener('DOMContentLoaded', function(){
 // 1 نمبر بڑھایا جائے گا: FF001, FF002, FF003 ...
 // یہ Online/Offline انڈیکیٹر کے نیچے دکھایا جاتا ہے۔
 // ============================================================
-const FF_BUILD_NO = 'FF001';
+const FF_BUILD_NO = 'FF002';
 document.addEventListener('DOMContentLoaded', function(){
   const el = document.getElementById('netStatusVersion');
   if(el) el.textContent = FF_BUILD_NO;
