@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FFPOS267SU0846</title>
+<title>FFPOS267SU0949</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#e65100">
 <meta name="mobile-web-app-capable" content="yes">
@@ -1865,6 +1865,52 @@
     </div>
   </button>
 
+  <!-- ═══ SHARE APP BUTTON — Android کا معیاری شیئر آئیکن (تین نوڈز) — ٹیپ=شیئر، لمبا دبانے پر=لنک/ٹیکسٹ ایڈٹ ═══ -->
+  <button id="shareAppHeaderBtn"
+    onclick="shareAppNow()"
+    title="📤 ایپ شیئر کریں (لمبا دبائیں: لنک ایڈٹ کریں)"
+    style="
+      position:absolute; top:9px; right:52px;
+      display:block;
+      background:transparent; border:none; padding:0; margin:0;
+      cursor:pointer; z-index:50; line-height:0;
+      -webkit-tap-highlight-color:transparent;
+      filter:drop-shadow(0 2px 3px rgba(0,0,0,0.55));
+      transition:transform .1s ease;
+    "
+    onmousedown="this.style.transform='scale(0.92)';_shareLpStart()"
+    onmouseup="this.style.transform='';_shareLpEnd()"
+    ontouchstart="this.style.transform='scale(0.92)';_shareLpStart()"
+    ontouchend="this.style.transform='';_shareLpEnd()">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="18" cy="5" r="3" fill="#37474f" stroke="#fff"/>
+      <circle cx="6" cy="12" r="3" fill="#37474f" stroke="#fff"/>
+      <circle cx="18" cy="19" r="3" fill="#37474f" stroke="#fff"/>
+      <line x1="8.6" y1="10.6" x2="15.4" y2="6.4"/>
+      <line x1="8.6" y1="13.4" x2="15.4" y2="17.6"/>
+    </svg>
+  </button>
+
+  <!-- ═══ MY ADS BUTTON — اشتہاری/پیکج پلان پوسٹر بنانے/شیئر کرنے کے لیے ═══ -->
+  <button id="myAdsHeaderBtn"
+    onclick="openMyAdsModal()"
+    title="📣 My Ads"
+    style="
+      position:absolute; top:9px; right:94px;
+      display:block;
+      background:transparent; border:none; padding:0; margin:0;
+      cursor:pointer; z-index:50; line-height:0;
+      -webkit-tap-highlight-color:transparent;
+      filter:drop-shadow(0 2px 3px rgba(0,0,0,0.55));
+      transition:transform .1s ease;
+    "
+    onmousedown="this.style.transform='scale(0.92)'"
+    onmouseup="this.style.transform=''"
+    ontouchstart="this.style.transform='scale(0.92)'"
+    ontouchend="this.style.transform=''">
+    <span style="font-size:24px;">📣</span>
+  </button>
+
 </div>
 
 
@@ -1991,6 +2037,118 @@
     <div onclick="closeRestoreInfoModal()" style="margin-top:12px;font-size:11px;color:rgba(255,255,255,0.4);cursor:pointer;">✕ منسوخ</div>
   </div>
 </div>
+
+<!-- ═══ SHARE APP LINK/TEXT EDIT MODAL — ٹاپ شیئر بٹن لمبا دبانے پر یا سیٹنگز سے کھلتا ہے ═══ -->
+<div id="shareEditModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);
+  z-index:9999;align-items:center;justify-content:center;">
+  <div style="background:#1e1400;border:1.5px solid rgba(255,160,0,0.5);border-radius:16px;
+    padding:20px;max-width:340px;width:90%;max-height:88vh;overflow-y:auto;">
+    <div style="text-align:center;font-size:30px;margin-bottom:6px;">📤</div>
+    <div style="text-align:center;font-size:13px;color:#ffd54f;font-weight:900;
+      font-family:'Arial Black',Arial,sans-serif;margin-bottom:14px;">ایپ شیئر — لنک اور پیغام</div>
+
+    <label style="font-size:10px;font-weight:bold;color:rgba(255,200,100,0.7);">📛 عنوان (بولڈ جائے گا)</label>
+    <input id="shareTitleInput" placeholder="Fast Food POS" style="width:100%;box-sizing:border-box;
+      padding:9px;margin:4px 0 10px;border:1px solid rgba(255,180,0,0.4);border-radius:8px;
+      font-size:13px;background:#2a1c00;color:#fff;font-weight:900;">
+
+    <label style="font-size:10px;font-weight:bold;color:rgba(255,200,100,0.7);">🇵🇰 اردو پیغام</label>
+    <textarea id="shareTextUrduInput" rows="3" placeholder="اپنا اردو پیغام یہاں لکھیں..." style="width:100%;
+      box-sizing:border-box;padding:9px;margin:4px 0 10px;border:1px solid rgba(255,180,0,0.4);
+      border-radius:8px;font-size:13px;background:#2a1c00;color:#fff;resize:vertical;
+      font-family:'Noto Nastaliq Urdu',Arial;direction:rtl;"></textarea>
+
+    <label style="font-size:10px;font-weight:bold;color:rgba(255,200,100,0.7);">🇬🇧 انگلش پیغام</label>
+    <textarea id="shareTextEnInput" rows="3" placeholder="Write your English message here..." style="width:100%;
+      box-sizing:border-box;padding:9px;margin:4px 0 10px;border:1px solid rgba(255,180,0,0.4);
+      border-radius:8px;font-size:13px;background:#2a1c00;color:#fff;resize:vertical;"></textarea>
+
+    <label style="font-size:10px;font-weight:bold;color:rgba(255,200,100,0.7);">🔗 ایپ کا لنک</label>
+    <input id="shareLinkInput" placeholder="https://yourname.github.io/yourrepo/" style="width:100%;
+      box-sizing:border-box;padding:9px;margin:4px 0 6px;border:1px solid rgba(255,180,0,0.4);
+      border-radius:8px;font-size:12px;background:#2a1c00;color:#ffd54f;direction:ltr;">
+
+    <div style="display:flex;gap:8px;margin-top:12px;">
+      <button onclick="saveShareSettings()" style="flex:1;background:linear-gradient(135deg,#2e7d32,#1b5e20);
+        color:#fff;border:none;border-radius:8px;padding:11px;font-size:12px;font-weight:900;cursor:pointer;">✅ محفوظ کریں</button>
+      <button onclick="closeShareEditModal()" style="flex:1;background:#455a64;color:#fff;border:none;
+        border-radius:8px;padding:11px;font-size:12px;font-weight:900;cursor:pointer;">✕ بند کریں</button>
+    </div>
+    <button onclick="shareAppNow()" style="width:100%;margin-top:8px;background:linear-gradient(135deg,#1565c0,#0d47a1);
+      color:#fff;border:none;border-radius:8px;padding:11px;font-size:12px;font-weight:900;cursor:pointer;">📤 ابھی شیئر کریں</button>
+  </div>
+</div>
+
+<!-- ═══ MY ADS MODAL — اشتہاری پوسٹر اور پیکج پلان پوسٹر، دونوں گیلری سے اپلوڈ، تبدیل/حذف کے قابل ═══ -->
+<div id="myAdsModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);
+  z-index:9999;align-items:center;justify-content:center;">
+  <div style="background:#1e1400;border:1.5px solid rgba(255,160,0,0.5);border-radius:16px;
+    padding:20px;max-width:360px;width:92%;max-height:90vh;overflow-y:auto;position:relative;">
+    <button onclick="closeMyAdsModal()" style="position:absolute;top:10px;left:10px;background:rgba(255,255,255,0.1);
+      color:#fff;border:none;width:28px;height:28px;border-radius:50%;font-size:14px;cursor:pointer;">✕</button>
+
+    <!-- ═══ چوزر — کون سا پوسٹر دیکھنا/بنانا ہے ═══ -->
+    <div id="myAdsChooser">
+      <div style="text-align:center;font-size:30px;margin-bottom:6px;">📣</div>
+      <div style="text-align:center;font-size:14px;color:#ffd54f;font-weight:900;
+        font-family:'Arial Black',Arial,sans-serif;margin-bottom:16px;">My Ads</div>
+      <button onclick="openPosterView('ad')" style="width:100%;text-align:right;display:flex;align-items:center;gap:10px;
+        background:linear-gradient(135deg,#2a1c00,#3d2900);border:1.5px solid rgba(255,180,0,0.35);
+        border-radius:12px;padding:14px;margin-bottom:10px;color:#fff;cursor:pointer;">
+        <span style="font-size:26px;">📢</span>
+        <span style="flex:1;text-align:right;">
+          <div style="font-size:13px;font-weight:900;">اشتہاری پوسٹر (Ad Poster)</div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.5);margin-top:2px;">اپنی ایپ/دکان کا اشتہار بنائیں اور شیئر کریں</div>
+        </span>
+      </button>
+      <button onclick="openPosterView('plan')" style="width:100%;text-align:right;display:flex;align-items:center;gap:10px;
+        background:linear-gradient(135deg,#2a1c00,#3d2900);border:1.5px solid rgba(255,180,0,0.35);
+        border-radius:12px;padding:14px;color:#fff;cursor:pointer;">
+        <span style="font-size:26px;">💳</span>
+        <span style="flex:1;text-align:right;">
+          <div style="font-size:13px;font-weight:900;">پیکج پلان پوسٹر (Package Plan)</div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.5);margin-top:2px;">سبسکرپشن پلانز والا پوسٹر بنائیں اور شیئر کریں</div>
+        </span>
+      </button>
+    </div>
+
+    <!-- ═══ پوسٹر ویو — منتخب کردہ پوسٹر دکھائے، اپلوڈ/تبدیل/حذف/شیئر ═══ -->
+    <div id="myAdsPosterView" style="display:none;">
+      <button onclick="backToMyAdsChooser()" style="background:none;border:none;color:#ffd54f;
+        font-size:12px;font-weight:bold;cursor:pointer;margin-bottom:10px;padding:0;">→ واپس</button>
+      <div id="posterViewTitle" style="text-align:center;font-size:13px;color:#ffd54f;font-weight:900;
+        font-family:'Arial Black',Arial,sans-serif;margin-bottom:12px;"></div>
+
+      <div style="background:#fff;border-radius:12px;padding:8px;margin-bottom:12px;min-height:120px;
+        display:flex;align-items:center;justify-content:center;">
+        <img id="posterViewImg" style="max-width:100%;border-radius:8px;display:none;">
+        <div id="posterViewEmpty" style="text-align:center;color:#999;font-size:12px;padding:20px;">
+          کوئی پوسٹر اپلوڈ نہیں ہوا<br>نیچے بٹن سے گیلری سے اپلوڈ کریں
+        </div>
+      </div>
+
+      <input type="file" id="posterFileInput" accept="image/*" style="display:none;" onchange="handlePosterUpload(event)">
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
+        <button onclick="triggerPosterUpload()" style="padding:11px 6px;border:none;border-radius:10px;
+          background:linear-gradient(135deg,#1565c0,#0d47a1);color:#fff;font-size:12px;font-weight:900;cursor:pointer;">🖼️ گیلری سے اپلوڈ</button>
+        <button id="posterDeleteBtn" onclick="deleteCurrentPoster()" style="padding:11px 6px;border:none;border-radius:10px;
+          background:linear-gradient(135deg,#c62828,#8e0000);color:#fff;font-size:12px;font-weight:900;cursor:pointer;">🗑️ حذف کریں</button>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <button onclick="sharePosterWhatsApp()" style="padding:11px 6px;border:none;border-radius:10px;
+          background:linear-gradient(135deg,#25d366,#128c45);color:#fff;font-size:12px;font-weight:900;cursor:pointer;">💬 WhatsApp</button>
+        <button onclick="sharePosterWhatsAppBusiness()" style="padding:11px 6px;border:none;border-radius:10px;
+          background:linear-gradient(135deg,#00a884,#00695c);color:#fff;font-size:12px;font-weight:900;cursor:pointer;">💼 WA Business</button>
+      </div>
+      <div style="font-size:9.5px;color:rgba(255,255,255,0.4);text-align:center;margin-top:8px;line-height:1.6;">
+        دونوں بٹن فون کا شیئر مینو کھولیں گے — وہاں سے WhatsApp یا WhatsApp Business میں سے جو چاہیں منتخب کر لیں۔
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <!-- POS SCREEN -->
 <div id="screen-pos" class="screen active">
@@ -2171,6 +2329,18 @@
 
     <!-- تھیم سیٹنگ ہٹا دی — مین پیج کے اوپر رنگ بار سے تھیم بدلیں -->
     <div id="themeGrid" style="display:none;"></div>
+
+    <!-- ═══ SHARE APP — لنک اور پیغام یہاں سے بھی ایڈٹ کر سکتے ہیں ═══ -->
+    <div class="settings-card">
+      <h3>📤 Share App</h3>
+      <div style="font-size:11px;color:#a06020;font-weight:bold;margin-bottom:8px;">
+        اپنی ایپ کا لنک اور پیغام یہاں سیٹ کریں — ہوم پیج کے شیئر بٹن سے یہی بھیجا جائے گا۔
+      </div>
+      <button class="manage-btn mbtn-save" style="width:100%;margin-bottom:8px;" onclick="openShareEditModal()">✏️ لنک/پیغام ایڈٹ کریں</button>
+      <div style="font-size:10px;color:#a06020;font-weight:bold;margin-bottom:3px;">موجودہ لنک:</div>
+      <div id="settingsShareLinkDisplay" onclick="copyShareLink()" style="background:#fff3e0;border:1.5px solid #ffcc80;
+        border-radius:8px;padding:9px;font-size:12px;color:#e65100;word-break:break-all;cursor:pointer;">— سیٹ نہیں</div>
+    </div>
 
 
 
@@ -5199,6 +5369,215 @@ async function testSaveImage(){
   }
 }
 
+// ============================================================
+// SHARE APP — ہوم پیج پر شیئر بٹن؛ ٹیپ = شیئر، لمبا دبانا (800ms) = لنک/ٹیکسٹ ایڈٹ
+// ============================================================
+let _shareLpTimer = null;
+let _shareLpFired  = false;
+
+function _shareLpStart(){
+  _shareLpFired = false;
+  _shareLpTimer = setTimeout(function(){
+    _shareLpFired = true;
+    openShareEditModal();
+  }, 800);
+}
+function _shareLpEnd(){
+  if(_shareLpTimer){ clearTimeout(_shareLpTimer); _shareLpTimer = null; }
+}
+
+function getShareSettings(){
+  return {
+    title: localStorage.getItem('ff_share_title') || 'Fast Food POS',
+    textUrdu: localStorage.getItem('ff_share_text_ur') || '',
+    textEn:   localStorage.getItem('ff_share_text_en') || '',
+    link:     localStorage.getItem('ff_share_link') || '',
+  };
+}
+
+function openShareEditModal(){
+  const s = getShareSettings();
+  document.getElementById('shareTitleInput').value    = s.title;
+  document.getElementById('shareTextUrduInput').value  = s.textUrdu;
+  document.getElementById('shareTextEnInput').value    = s.textEn;
+  document.getElementById('shareLinkInput').value      = s.link;
+  document.getElementById('shareEditModal').style.display = 'flex';
+}
+function closeShareEditModal(){
+  document.getElementById('shareEditModal').style.display = 'none';
+}
+
+function saveShareSettings(){
+  const title    = document.getElementById('shareTitleInput').value.trim() || 'Fast Food POS';
+  const textUrdu = document.getElementById('shareTextUrduInput').value;
+  const textEn   = document.getElementById('shareTextEnInput').value;
+  const link     = document.getElementById('shareLinkInput').value.trim();
+  localStorage.setItem('ff_share_title', title);
+  localStorage.setItem('ff_share_text_ur', textUrdu);
+  localStorage.setItem('ff_share_text_en', textEn);
+  localStorage.setItem('ff_share_link', link);
+  refreshShareLinkDisplay();
+  showToast('✅ شیئر سیٹنگ محفوظ ہو گئی');
+  closeShareEditModal();
+}
+
+function refreshShareLinkDisplay(){
+  const el = document.getElementById('settingsShareLinkDisplay');
+  if(!el) return;
+  const s = getShareSettings();
+  el.textContent = s.link || '— سیٹ نہیں (ٹیپ کر کے ایڈٹ کریں)';
+  if(!s.link) el.onclick = openShareEditModal;
+  else el.onclick = copyShareLink;
+}
+document.addEventListener('DOMContentLoaded', function(){
+  setTimeout(refreshShareLinkDisplay, 300);
+});
+
+function _buildShareMessage(){
+  const s = getShareSettings();
+  const parts = [];
+  parts.push('*' + s.title + '*'); // بولڈ عنوان (واٹس ایپ فارمیٹنگ)
+  if(s.textUrdu) parts.push(s.textUrdu);
+  if(s.textEn)   parts.push(s.textEn);
+  if(s.link)     parts.push(s.link);
+  return parts.join('\n\n');
+}
+
+async function shareAppNow(){
+  // اگر لمبا دبانے سے ایڈٹ موڈل کھل چکا تو یہاں شیئر نہ کریں
+  if(_shareLpFired){ _shareLpFired = false; return; }
+  const s = getShareSettings();
+  if(!s.link){
+    showToast('⚠️ پہلے لنک سیٹ کریں — شیئر بٹن 1 سیکنڈ دبا کر رکھیں');
+    openShareEditModal();
+    return;
+  }
+  const msg = _buildShareMessage();
+  if(navigator.share){
+    try{
+      await navigator.share({ title: s.title, text: msg });
+    }catch(e){ /* یوزر نے منسوخ کر دیا */ }
+  } else {
+    window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+  }
+}
+
+function copyShareLink(){
+  const s = getShareSettings();
+  if(!s.link) return;
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(s.link).catch(function(){});
+  }
+  showToast('📋 لنک کاپی ہو گیا');
+}
+
+// ============================================================
+// MY ADS — دو پوسٹر: اشتہاری (ad) اور پیکج پلان (plan)
+// دونوں گیلری سے اپلوڈ ہوتے ہیں، تبدیل/حذف کے قابل، WhatsApp/WA Business شیئر
+// ============================================================
+let _currentPosterType = null; // 'ad' | 'plan'
+
+function _posterKey(type){ return type==='plan' ? 'ff_plan_poster' : 'ff_ad_poster'; }
+
+function openMyAdsModal(){
+  document.getElementById('myAdsModal').style.display = 'flex';
+  backToMyAdsChooser();
+}
+function closeMyAdsModal(){
+  document.getElementById('myAdsModal').style.display = 'none';
+}
+function backToMyAdsChooser(){
+  _currentPosterType = null;
+  document.getElementById('myAdsChooser').style.display = 'block';
+  document.getElementById('myAdsPosterView').style.display = 'none';
+}
+
+function openPosterView(type){
+  _currentPosterType = type;
+  document.getElementById('myAdsChooser').style.display = 'none';
+  document.getElementById('myAdsPosterView').style.display = 'block';
+  document.getElementById('posterViewTitle').textContent =
+    type==='plan' ? '💳 پیکج پلان پوسٹر' : '📢 اشتہاری پوسٹر';
+  _renderPosterView();
+}
+
+function _renderPosterView(){
+  const data = localStorage.getItem(_posterKey(_currentPosterType));
+  const img = document.getElementById('posterViewImg');
+  const empty = document.getElementById('posterViewEmpty');
+  if(data){
+    img.src = data;
+    img.style.display = 'block';
+    empty.style.display = 'none';
+  } else {
+    img.style.display = 'none';
+    empty.style.display = 'block';
+  }
+}
+
+function triggerPosterUpload(){
+  document.getElementById('posterFileInput').click();
+}
+
+// گیلری سے چنی گئی تصویر کو مناسب سائز پر compress کر کے (تاکہ localStorage/بیک اپ بہت بڑا نہ ہو) محفوظ کریں
+function handlePosterUpload(event){
+  const file = event.target.files[0];
+  if(!file || !_currentPosterType) return;
+  const reader = new FileReader();
+  reader.onload = function(e){
+    const img = new Image();
+    img.onload = function(){
+      const maxW = 900, maxH = 1600;
+      const scale = Math.min(1, maxW/img.width, maxH/img.height);
+      const w = Math.round(img.width*scale), h = Math.round(img.height*scale);
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+      try{
+        localStorage.setItem(_posterKey(_currentPosterType), dataUrl);
+        showToast('✅ پوسٹر محفوظ ہو گیا');
+      }catch(err){
+        showToast('❌ پوسٹر بہت بڑا ہے — چھوٹی تصویر منتخب کریں');
+        return;
+      }
+      _renderPosterView();
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+  event.target.value = ''; // تاکہ وہی فائل دوبارہ منتخب کرنے پر بھی onchange فائر ہو
+}
+
+function deleteCurrentPoster(){
+  if(!_currentPosterType) return;
+  if(!confirm('کیا واقعی یہ پوسٹر حذف کرنا چاہتے ہیں؟')) return;
+  localStorage.removeItem(_posterKey(_currentPosterType));
+  _renderPosterView();
+  showToast('🗑️ پوسٹر حذف ہو گیا');
+}
+
+// نوٹ: ویب ایپ سے WhatsApp اور WhatsApp Business میں فرق کر کے براہ راست ٹارگٹ کرنا ممکن نہیں —
+// دونوں بٹن فون کا نیٹو شیئر مینو کھولتے ہیں، جہاں سے صارف خود درست ایپ منتخب کر لیتا ہے۔
+async function _sharePosterGeneric(){
+  if(!_currentPosterType) return;
+  const data = localStorage.getItem(_posterKey(_currentPosterType));
+  if(!data){ showToast('⚠️ پہلے پوسٹر اپلوڈ کریں'); return; }
+  try{
+    const blob = await (await fetch(data)).blob();
+    const file = new File([blob], (_currentPosterType==='plan'?'Package_Plan':'Ad_Poster')+'.jpg', {type:'image/jpeg'});
+    if(navigator.canShare && navigator.canShare({files:[file]})){
+      await navigator.share({files:[file], title:'Poster'});
+    } else {
+      window.open('https://wa.me/?text='+encodeURIComponent('Poster attached'), '_blank');
+    }
+  }catch(e){
+    if(e.name!=='AbortError') showToast('شیئر نہ ہو سکا');
+  }
+}
+async function sharePosterWhatsApp(){ await _sharePosterGeneric(); }
+async function sharePosterWhatsAppBusiness(){ await _sharePosterGeneric(); }
+
 function initPrintLayoutSettingsUI(){
   const cfg = getBillCfg();
   setImgFont(_imgFont);
@@ -7760,7 +8139,7 @@ document.addEventListener('DOMContentLoaded', function(){
 // 1 نمبر بڑھایا جائے گا: FF001, FF002, FF003 ...
 // یہ Online/Offline انڈیکیٹر کے نیچے دکھایا جاتا ہے۔
 // ============================================================
-const FF_BUILD_NO = 'FF004';
+const FF_BUILD_NO = 'FF006';
 document.addEventListener('DOMContentLoaded', function(){
   const el = document.getElementById('netStatusVersion');
   if(el) el.textContent = FF_BUILD_NO;
@@ -7819,6 +8198,8 @@ const FF_BACKUP_KEYS = [
   'ff_bill_cfg','ff_bill_font_size','ff_bill_lang','ff_date_lang','ff_bill_theme',
   'ff_exp_history','ff_day_locked','ff_phone','ff_yt_link',
   'ff_contact_email','ff_contact_wa',
+  'ff_share_title','ff_share_text_ur','ff_share_text_en','ff_share_link',
+  'ff_ad_poster','ff_plan_poster',
   'pos_state','pos_state_backup','pos_last_day'
 ];
 

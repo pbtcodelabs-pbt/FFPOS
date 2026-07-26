@@ -3,7 +3,7 @@
 // آف لائن اور آن لائن دونوں حالتوں میں ایپ چلانے کے لیے۔
 // ہر نئی ڈیلیوری پر CACHE_VERSION بڑھایا جائے گا (خودکار، بغیر پوچھے)۔
 // ============================================================
-const CACHE_VERSION = 'ffpos-cache-v4';
+const CACHE_VERSION = 'ffpos-cache-v6';
 const APP_SHELL = [
   './index.html',
   './manifest.json',
