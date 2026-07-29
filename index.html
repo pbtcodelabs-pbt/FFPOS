@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FFPOS267SU1122</title>
+<title>FFPOS297WE0555</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#e65100">
 <meta name="mobile-web-app-capable" content="yes">
@@ -1262,12 +1262,31 @@
     opacity:0; height:30px;
   }
 </style>
+
+<script>
+(function(){
+  document.addEventListener('contextmenu', function(e){ e.preventDefault(); return false; }, false);
+  document.addEventListener('keydown', function(e){
+    var k = e.key;
+    var blocked =
+      k === 'F12' ||
+      (e.ctrlKey && e.shiftKey && (k === 'I' || k === 'i' || k === 'J' || k === 'j' || k === 'C' || k === 'c')) ||
+      (e.ctrlKey && (k === 'U' || k === 'u')) ||
+      (e.metaKey && e.altKey && (k === 'I' || k === 'i' || k === 'J' || k === 'j'));
+    if(blocked){ e.preventDefault(); e.stopPropagation(); return false; }
+  }, false);
+  document.addEventListener('selectstart', function(e){
+    var tag = (e.target && e.target.tagName) || '';
+    if(tag !== 'INPUT' && tag !== 'TEXTAREA') e.preventDefault();
+  }, false);
+})();
+</script>
 </head>
 <body>
 
 
 
-<!-- ===== TRIAL EXPIRED SCREEN ===== -->
+
 <div class="ff-overlay hidden" id="expiredOverlay">
   <div class="ff-overlay-card">
     <div class="expired-icon">⏳</div>
@@ -1307,15 +1326,15 @@
   </div>
 </div>
 
-<!-- ===== FIRST TIME SETUP SCREEN ===== -->
+
 <div class="ff-overlay hidden" id="setupOverlay" style="
   background: linear-gradient(160deg,#001a8c 0%,#0033cc 40%,#0055ff 70%,#0033cc 100%);
   align-items:center; justify-content:center; padding:16px 14px; overflow-y:auto;">
 
-  <!-- ═══ CHAT WITH DEVELOPER — Login/Activation Page ═══ -->
+  
   <div id="loginDevChatWrap" style="position:fixed; top:9px; left:10px; z-index:10001; display:flex; align-items:center; gap:8px;">
 
-    <!-- Toggle بٹن — چھوٹا 3D آئیکن -->
+    
     <button id="loginDevChatToggle" onclick="toggleLoginDevChat(event)" title="ڈویلپر سے رابطہ کریں" style="
       width:36px;height:36px;border-radius:50%;flex-shrink:0;
       border:2px solid rgba(255,255,255,0.55);
@@ -1327,12 +1346,12 @@
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
     </button>
 
-    <!-- Expandable options — ہاریزنٹل، صرف tap کرنے پر نظر آئیں -->
+    
     <div id="loginDevChatOptions" style="
       display:none; flex-direction:row; align-items:center; gap:8px;
       animation:devChatPop .15s ease;
     ">
-      <!-- WhatsApp Business -->
+      
       <a href="#" onclick="loginDevChatWhatsApp();return false;" title="WhatsApp Business" style="
         position:relative; width:38px;height:38px;border-radius:11px;flex-shrink:0;
         display:flex;align-items:center;justify-content:center;
@@ -1349,7 +1368,7 @@
           box-shadow:0 1px 3px rgba(0,0,0,0.4);">B</span>
       </a>
 
-      <!-- Gmail -->
+      
       <a href="#" onclick="loginDevChatGmail();return false;" title="Gmail" style="
         width:38px;height:38px;border-radius:11px;flex-shrink:0;
         display:flex;align-items:center;justify-content:center;
@@ -1367,7 +1386,7 @@
         </svg>
       </a>
 
-      <!-- SMS -->
+      
       <a href="#" onclick="loginDevChatSMS();return false;" title="SMS بھیجیں" style="
         width:38px;height:38px;border-radius:11px;flex-shrink:0;
         display:flex;align-items:center;justify-content:center;
@@ -1380,7 +1399,7 @@
     </div>
   </div>
 
-  <!-- Floating glow orbs -->
+  
   <div style="position:fixed;top:-80px;left:-60px;width:280px;height:280px;border-radius:50%;
     background:radial-gradient(circle,rgba(255,140,0,0.18) 0%,transparent 70%);pointer-events:none;z-index:0;"></div>
   <div style="position:fixed;bottom:-60px;right:-40px;width:220px;height:220px;border-radius:50%;
@@ -1388,47 +1407,47 @@
 
   <div style="position:relative;z-index:1;width:min(360px,100%);margin:auto;">
 
-    <!-- 3D Card -->
+    
     <div style="
       background:transparent;
       border-radius:28px;
       padding:10px 22px 24px;
       text-align:center;">
 
-      <!-- App Icon -->
+      
       <div style="font-size:56px;margin-bottom:6px;
         filter:drop-shadow(0 0 20px rgba(255,140,0,0.7)) drop-shadow(0 4px 12px rgba(0,0,0,0.5));">
         <svg width="72" height="80" viewBox="0 0 72 80" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:0 auto;">
-          <!-- Cone -->
+          
           <polygon points="36,78 10,34 62,34" fill="url(#coneGrad)" stroke="#c8860a" stroke-width="1.2"/>
-          <!-- Cone grid lines -->
+          
           <line x1="23" y1="34" x2="36" y2="78" stroke="#b07410" stroke-width="0.8" opacity="0.6"/>
           <line x1="49" y1="34" x2="36" y2="78" stroke="#b07410" stroke-width="0.8" opacity="0.6"/>
           <line x1="12" y1="44" x2="60" y2="44" stroke="#b07410" stroke-width="0.7" opacity="0.5"/>
           <line x1="16" y1="54" x2="56" y2="54" stroke="#b07410" stroke-width="0.7" opacity="0.5"/>
           <line x1="22" y1="64" x2="50" y2="64" stroke="#b07410" stroke-width="0.7" opacity="0.5"/>
-          <!-- Scoop 1 — bottom pink -->
+          
           <ellipse cx="36" cy="30" rx="22" ry="16" fill="url(#scoop1Grad)"/>
           <ellipse cx="36" cy="27" rx="18" ry="10" fill="url(#scoop1Hi)" opacity="0.5"/>
-          <!-- Scoop 2 — middle white/vanilla -->
+          
           <ellipse cx="36" cy="17" rx="19" ry="14" fill="url(#scoop2Grad)"/>
           <ellipse cx="34" cy="14" rx="14" ry="8" fill="url(#scoop2Hi)" opacity="0.45"/>
-          <!-- Scoop 3 — top chocolate -->
+          
           <ellipse cx="36" cy="7" rx="16" ry="12" fill="url(#scoop3Grad)"/>
           <ellipse cx="34" cy="4" rx="11" ry="6" fill="url(#scoop3Hi)" opacity="0.4"/>
-          <!-- Cherry on top -->
+          
           <circle cx="36" cy="-1" r="4" fill="#e53935"/>
           <circle cx="35" cy="-2" r="1.5" fill="rgba(255,255,255,0.5)"/>
           <line x1="36" y1="-4" x2="39" y2="-9" stroke="#2e7d32" stroke-width="1.2" stroke-linecap="round"/>
-          <!-- Sprinkles on vanilla -->
+          
           <rect x="26" y="14" width="5" height="2" rx="1" fill="#ff4081" transform="rotate(-20,26,14)"/>
           <rect x="40" y="18" width="5" height="2" rx="1" fill="#00bcd4" transform="rotate(15,40,18)"/>
           <rect x="32" y="20" width="4" height="2" rx="1" fill="#ffeb3b" transform="rotate(5,32,20)"/>
           <rect x="44" y="13" width="4" height="2" rx="1" fill="#76ff03" transform="rotate(-10,44,13)"/>
-          <!-- Chocolate drip -->
+          
           <path d="M30,12 Q28,17 29,22" stroke="#5d4037" stroke-width="2.5" fill="none" stroke-linecap="round"/>
           <path d="M45,11 Q47,16 45,21" stroke="#5d4037" stroke-width="2" fill="none" stroke-linecap="round"/>
-          <!-- Gradients -->
+          
           <defs>
             <linearGradient id="coneGrad" x1="0" y1="0" x2="1" y2="1">
               <stop offset="0%" stop-color="#f9a825"/>
@@ -1465,7 +1484,7 @@
         </svg>
       </div>
 
-      <!-- App Name 3D -->
+      
       <div style="
         font-family:'Arial Black',Arial,sans-serif;
         font-size:34px;font-weight:900;
@@ -1479,7 +1498,7 @@
       <div style="font-size:11px;color:rgba(255,200,100,0.65);font-family:Arial,sans-serif;
         letter-spacing:1.5px;margin-bottom:20px;">BY FFPOS &bull; POINT OF SALE</div>
 
-      <!-- 7 Days Free Trial Banner -->
+      
       <div style="
         background:linear-gradient(135deg,#ff8f00,#e65100,#bf360c);
         border-radius:16px;padding:13px 16px;margin-bottom:18px;
@@ -1495,7 +1514,7 @@
           font-family:Arial,sans-serif;">کوئی ادائیگی نہیں — ابھی شروع کریں</div>
       </div>
 
-      <!-- Unique User ID Box -->
+      
       <div style="
         background:linear-gradient(135deg,#4a1f00,#3d1a00);
         border:1.5px solid rgba(255,160,0,0.5);
@@ -1513,13 +1532,13 @@
         </div>
       </div>
 
-      <!-- Activation Code Label -->
+      
       <div style="font-size:10px;color:rgba(255,200,100,0.55);margin-bottom:6px;
         font-family:'Arial Black',Arial,sans-serif;letter-spacing:1px;text-align:left;">
         ACTIVATION CODE — Developer سے لیں
       </div>
 
-      <!-- Activation Input -->
+      
       <input class="act-input" id="setupActInput" type="text" inputmode="numeric" pattern="[0-9]*"
         placeholder="Activation Code یہاں ڈالیں"
         onkeyup="if(event.key==='Enter') completeSetup()"
@@ -1535,7 +1554,7 @@
           outline:none;">
 
 
-      <!-- Activate Button — 3D Green -->
+      
       <button type="button" onclick="completeSetup()" style="
         width:100%;padding:14px;
         background:linear-gradient(135deg,#2e7d32,#1b5e20,#0a3d0a);
@@ -1551,14 +1570,14 @@
         ✅ ایکٹیویٹ کریں
       </button>
 
-      <!-- Divider -->
+      
       <div style="display:flex;align-items:center;gap:8px;margin:4px 0 10px;">
         <div style="flex:1;height:1px;background:rgba(255,255,255,0.1);"></div>
         <div style="font-size:11px;color:rgba(255,255,255,0.3);font-family:Arial,sans-serif;">یا</div>
         <div style="flex:1;height:1px;background:rgba(255,255,255,0.1);"></div>
       </div>
 
-      <!-- Free Trial Button — 3D Gold -->
+      
       <button type="button" onclick="startFreeTrial()" style="
         width:100%;padding:13px;
         background:linear-gradient(135deg,#4a1f00,#6b2d00,#4a1f00);
@@ -1571,18 +1590,18 @@
         🎁 7 دن مفت ٹرائل شروع کریں
       </button>
 
-      <!-- Message -->
+      
       <div class="ff-ov-msg" id="setupMsg"
         style="font-family:Arial,sans-serif;text-align:center;margin-top:10px;font-size:13px;min-height:20px;"></div>
 
-    </div><!-- /card -->
-  </div><!-- /wrapper -->
+    </div>
+  </div>
 </div>
 
-<!-- ===== SUBSCRIPTION STATUS BAR ===== -->
+
 <div class="sub-status-bar" id="subStatusBar"></div>
 
-<!-- ===== OWNER PANEL MODAL ===== -->
+
 <div class="owner-modal" id="ownerModal">
   <div class="owner-box">
     <div class="owner-title">🔐 OWNER PANEL</div>
@@ -1629,7 +1648,7 @@
 </div>
 
 
-<!-- ===== CONTACT / PURCHASE MODAL ===== -->
+
 <div class="ff-overlay hidden" id="contactModal" style="background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);">
   <div class="ff-overlay-card" style="margin:auto 0;">
     <div style="font-size:32px;margin-bottom:6px;">📲</div>
@@ -1677,27 +1696,27 @@
   </div>
 </div>
 
-<!-- BOTTOM NAV BAR — صرف non-POS screens پر دکھائی دیتا ہے -->
+
 <div id="bottomNav">
   <button class="bnav-btn" onclick="navBack()" title="Back">&#8592;</button>
   <button class="bnav-home" onclick="goHome()" title="Home">&#127968;</button>
   <button class="bnav-btn" onclick="navForward()" title="Forward">&#8594;</button>
 </div>
 
-<!-- HEADER -->
+
 <div class="header">
   <div class="header-top">
     <div style="display:flex;flex-direction:column;align-items:center;width:100%;gap:7px;">
-      <!-- Shop Name — اوپر center میں -->
+      
       <div class="shop-name-badge" onclick="editShopName()" title="Tap to edit shop name">
         <div class="shop-name-text" id="shopNameDisplay">Fast Food POS</div>
         <div class="shop-name-hint">✏️ TAP TO EDIT</div>
       </div>
 
-      <!-- ═══ MY ADS (بائیں) + ONLINE/OFFLINE + VERSION (درمیان) + SHARE (دائیں) + REFRESH ═══ -->
+      
       <div style="display:flex;align-items:center;gap:7px;justify-content:center;flex-wrap:nowrap;">
 
-        <!-- My Ads — پیل کے بائیں -->
+        
         <button id="myAdsHeaderBtn" onclick="openMyAdsModal()" title="📣 My Ads" style="
             width:36px;height:36px;border-radius:50%;flex-shrink:0;
             border:1.5px solid rgba(255,255,255,0.22);
@@ -1729,7 +1748,7 @@
             text-shadow:0 0 4px rgba(255,213,79,0.35);">FF001</div>
         </div>
 
-        <!-- Share App — پیل کے دائیں -->
+        
         <button id="shareAppHeaderBtn" onclick="shareAppNow()" title="📤 ایپ شیئر کریں (لمبا دبائیں: لنک ایڈٹ کریں)" style="
             width:36px;height:36px;border-radius:50%;flex-shrink:0;
             border:1.5px solid rgba(255,255,255,0.22);
@@ -1748,7 +1767,7 @@
           </svg>
         </button>
 
-        <!-- تازہ ورژن چیک کرنے کا بٹن — پرانا کیش/سروس ورکر ہٹا کر تازہ فائل لوڈ کرتا ہے -->
+        
         <button id="appRefreshBtn" onclick="forceAppUpdate()" title="نیا ورژن چیک کریں" style="
           width:36px;height:36px;border-radius:50%;flex-shrink:0;
           border:1.5px solid rgba(255,255,255,0.22);
@@ -1761,7 +1780,7 @@
         </button>
       </div>
 
-      <!-- تھیم رنگ — فوری بدلنے کے لیے -->
+      
       <div id="homeThemeStrip" style="
         display:flex; align-items:center; justify-content:center;
         gap:7px; padding:3px 0; flex-wrap:nowrap;"></div>
@@ -1769,10 +1788,10 @@
   </div>
   <div class="header-time" id="clock"></div>
 
-  <!-- ═══ CHAT WITH DEVELOPER — ہیڈر میں، DELICIA لوگو کے بائیں طرف، محفوظ جگہ ═══ -->
+  
   <div id="devChatWrap" style="position:absolute; top:9px; left:10px; z-index:55; display:flex; align-items:center; gap:8px;">
 
-    <!-- Toggle بٹن — چھوٹا 3D آئیکن -->
+    
     <button id="devChatToggle" onclick="toggleDevChat(event)" title="ڈویلپر سے رابطہ کریں" style="
       width:36px;height:36px;border-radius:50%;flex-shrink:0;
       border:2px solid rgba(255,255,255,0.55);
@@ -1784,12 +1803,12 @@
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
     </button>
 
-    <!-- Expandable options — ہاریزنٹل، صرف tap کرنے پر نظر آئیں -->
+    
     <div id="devChatOptions" style="
       display:none; flex-direction:row; align-items:center; gap:8px;
       animation:devChatPop .15s ease;
     ">
-      <!-- WhatsApp Business — اصلی گرین گریڈینٹ + Business بیج -->
+      
       <a href="#" onclick="devChatWhatsApp();return false;" title="WhatsApp Business" style="
         position:relative; width:38px;height:38px;border-radius:11px;flex-shrink:0;
         display:flex;align-items:center;justify-content:center;
@@ -1798,7 +1817,7 @@
         box-shadow:0 4px 0 #0a4a38,0 5px 12px rgba(15,122,92,0.55),inset 0 1px 0 rgba(255,255,255,0.4);
         text-decoration:none;-webkit-tap-highlight-color:transparent;">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.39 1.26 4.81L2 22l5.42-1.35a9.86 9.86 0 0 0 4.62 1.15h.01c5.46 0 9.9-4.45 9.9-9.9 0-2.65-1.03-5.13-2.9-7C17.17 3.03 14.69 2 12.04 2m0 1.8c2.15 0 4.18.84 5.7 2.36a8.02 8.02 0 0 1 2.36 5.72c0 4.46-3.63 8.09-8.09 8.09a8.07 8.07 0 0 1-4.1-1.12l-.29-.17-3.02.76.8-2.95-.19-.3a8.05 8.05 0 0 1-1.24-4.3c0-4.46 3.63-8.09 8.09-8.09m-4.5 4.4c-.17 0-.44.06-.67.32-.23.26-.87.85-.87 2.08 0 1.22.9 2.4 1.02 2.57.12.17 1.75 2.67 4.24 3.74.59.26 1.05.4 1.41.52.59.19 1.13.16 1.55.1.47-.07 1.46-.6 1.67-1.18.2-.58.2-1.08.14-1.18-.06-.1-.23-.16-.47-.28-.25-.12-1.46-.72-1.68-.8-.23-.08-.4-.12-.56.12-.17.25-.64.8-.78.96-.15.17-.29.19-.54.06-.25-.12-1.04-.38-1.98-1.22-.73-.65-1.23-1.46-1.37-1.71-.15-.25-.02-.38.11-.5.11-.11.25-.29.37-.44.12-.14.16-.25.24-.4.08-.17.04-.31-.02-.44-.06-.12-.56-1.36-.77-1.86-.2-.48-.4-.42-.56-.42h-.48Z"/></svg>
-        <!-- Business بیج -->
+        
         <span style="
           position:absolute; bottom:-4px; right:-4px; width:15px; height:15px;
           border-radius:50%; background:#fff; border:1.5px solid #0f7a5c;
@@ -1807,7 +1826,7 @@
           box-shadow:0 1px 3px rgba(0,0,0,0.4);">B</span>
       </a>
 
-      <!-- Gmail — اصلی 4 رنگ لوگو، سفید بیک گراؤنڈ پر -->
+      
       <a href="#" onclick="devChatGmail();return false;" title="Gmail" style="
         width:38px;height:38px;border-radius:11px;flex-shrink:0;
         display:flex;align-items:center;justify-content:center;
@@ -1825,7 +1844,7 @@
         </svg>
       </a>
 
-      <!-- SMS — کلاسک میسج بلیو گریڈینٹ -->
+      
       <a href="#" onclick="devChatSMS();return false;" title="SMS بھیجیں" style="
         width:38px;height:38px;border-radius:11px;flex-shrink:0;
         display:flex;align-items:center;justify-content:center;
@@ -1838,7 +1857,7 @@
     </div>
   </div>
 
-  <!-- ═══ PRINTER SETTINGS BUTTON — top right, icon only (no box) ═══ -->
+  
   <button id="printerHeaderBtn"
     onclick="printerHeaderAction()"
     title="🖨️ پرنٹر سیٹنگز"
@@ -1856,9 +1875,9 @@
     ontouchstart="this.style.transform='scale(0.92)'"
     ontouchend="this.style.transform=''">
 
-    <!-- Printer + Gear + Status dot group — 3D glossy -->
+    
     <div style="position:relative; width:32px; height:30px;">
-      <!-- Printer body — 3D metallic gradient -->
+      
       <svg width="30" height="28" viewBox="0 0 30 28"
            style="position:absolute;top:2px;left:0;">
         <defs>
@@ -1879,14 +1898,14 @@
         <line x1="10" y1="19" x2="20" y2="19" stroke="rgba(255,255,255,0.4)" stroke-width="1.2"/>
         <line x1="10" y1="22" x2="17" y2="22" stroke="rgba(255,255,255,0.4)" stroke-width="1.2"/>
       </svg>
-      <!-- Gear icon — top-right, alongside printer, no background -->
+      
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#ffd54f"
            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
            style="position:absolute;top:-2px;right:-4px;">
         <circle cx="12" cy="12" r="3"/>
         <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
       </svg>
-      <!-- Status LED — glossy bevel, glows green (connected) / amber (connecting) / red (off) -->
+      
       <div id="phbDot" style="
         position:absolute; top:1px; left:13px;
         width:8px; height:8px; border-radius:50%;
@@ -1901,12 +1920,12 @@
 </div>
 
 
-<!-- Floating Logout — top-left corner, away from other buttons -->
+
 <button id="floatLogoutBtn" onclick="doLogout()" title="Logout">
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="11" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
 </button>
 
-<!-- ===== LOGOUT CONFIRMATION MODAL ===== -->
+
 <div id="logoutConfirmModal">
   <div id="logoutConfirmBox">
     <span class="lcm-icon">🔒</span>
@@ -1919,7 +1938,7 @@
   </div>
 </div>
 
-<!-- ===== PRINTER SETTINGS MODAL — دیدیکیٹڈ، اوپر والا پرنٹر/گیئر ائیکن اسے کھولے (general Settings سے مکمل الگ) ===== -->
+
 <div id="printerModal" onclick="if(event.target===this) closePrinterModal()">
   <div class="pmodal-box">
     <div class="pmodal-head">
@@ -1953,7 +1972,7 @@
       <div class="pmodal-name" id="pmName">Not Connected</div>
       <div class="pmodal-sub" id="pmSub">Bluetooth پرنٹر کنیکٹ کرنے کے لیے نیچے بٹن دبائیں</div>
 
-      <!-- ═══ کاغذ کی چوڑائی — Direct Bluetooth راسٹر پرنٹ کے لیے ═══ -->
+      
       <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin:6px 0 10px;">
         <span style="font-size:11px;color:#888;font-weight:bold;">📏 کاغذ:</span>
         <button id="pmPaper58" class="pmodal-paper-btn" onclick="setPaperWidth(58)"
@@ -1962,7 +1981,7 @@
           style="padding:5px 12px;border-radius:8px;border:1.5px solid #ef6c00;background:transparent;color:#ef6c00;font-weight:900;font-size:12px;cursor:pointer;">80mm</button>
       </div>
 
-      <!-- ═══ پرنٹ موڈ — تصویر (اصل فونٹ، بھاری/سست) بمقابلہ متن (ہلکا/تیز، کمزور پرنٹرز کے لیے) ═══ -->
+      
       <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin:0 0 10px;">
         <span style="font-size:11px;color:#888;font-weight:bold;">🖨️ موڈ:</span>
         <button id="pmModeImage" class="pmodal-mode-btn" onclick="setPrintMode('image')"
@@ -1982,7 +2001,7 @@
   </div>
 </div>
 
-<!-- ═══ LAST BACKUP BAR — Home page کے اوپر، Backup/Restore بٹن ═══ -->
+
 <div id="lastBackupBar" style="
   display:flex;align-items:center;gap:8px;
   padding:7px 10px;background:linear-gradient(135deg,#3d2200,#2a1700);
@@ -2002,7 +2021,7 @@
   <input type="file" id="restoreFileInput" accept="application/json,.json" style="display:none;" onchange="handleRestoreFileSelected(this)">
 </div>
 
-<!-- ═══ RESTORE INFO MODAL — آخری بیک اپ فائل کا نام دکھائے تاکہ فائل پکر میں ڈھونڈی جا سکے ═══ -->
+
 <div id="restoreInfoModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);
   z-index:9999;align-items:center;justify-content:center;">
   <div style="background:#1e1400;border:1.5px solid rgba(255,160,0,0.5);border-radius:16px;
@@ -2025,7 +2044,7 @@
   </div>
 </div>
 
-<!-- ═══ SHARE APP LINK/TEXT EDIT MODAL — ٹاپ شیئر بٹن لمبا دبانے پر یا سیٹنگز سے کھلتا ہے ═══ -->
+
 <div id="shareEditModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);
   z-index:9999;align-items:center;justify-content:center;">
   <div style="background:#1e1400;border:1.5px solid rgba(255,160,0,0.5);border-radius:16px;
@@ -2066,7 +2085,7 @@
   </div>
 </div>
 
-<!-- ═══ MY ADS MODAL — اشتہاری پوسٹر اور پیکج پلان پوسٹر، دونوں گیلری سے اپلوڈ، تبدیل/حذف کے قابل ═══ -->
+
 <div id="myAdsModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);
   z-index:9999;align-items:center;justify-content:center;">
   <div style="background:#1e1400;border:1.5px solid rgba(255,160,0,0.5);border-radius:16px;
@@ -2074,7 +2093,7 @@
     <button onclick="closeMyAdsModal()" style="position:absolute;top:10px;left:10px;background:rgba(255,255,255,0.1);
       color:#fff;border:none;width:28px;height:28px;border-radius:50%;font-size:14px;cursor:pointer;">✕</button>
 
-    <!-- ═══ چوزر — کون سا پوسٹر دیکھنا/بنانا ہے ═══ -->
+    
     <div id="myAdsChooser">
       <div style="text-align:center;font-size:30px;margin-bottom:6px;">📣</div>
       <div style="text-align:center;font-size:14px;color:#ffd54f;font-weight:900;
@@ -2099,7 +2118,7 @@
       </button>
     </div>
 
-    <!-- ═══ پوسٹر ویو — منتخب کردہ پوسٹر دکھائے، اپلوڈ/تبدیل/حذف/شیئر ═══ -->
+    
     <div id="myAdsPosterView" style="display:none;">
       <button onclick="backToMyAdsChooser()" style="background:none;border:none;color:#ffd54f;
         font-size:12px;font-weight:bold;cursor:pointer;margin-bottom:10px;padding:0;">→ واپس</button>
@@ -2137,14 +2156,14 @@
 </div>
 
 
-<!-- POS SCREEN -->
+
 <div id="screen-pos" class="screen active">
   <div class="pos-layout">
     <div class="menu-panel">
 
 
 
-      <!-- ===== ZOOM SLIDER BAR ===== -->
+      
       <div id="zoomStripBar" style="justify-content:flex-end;padding:2px 8px;">
         <input type="hidden" id="gridZoomSlider" value="3">
         <span id="zoomLbl" style="display:none;">3 کالم</span>
@@ -2155,7 +2174,7 @@
       <div class="items-grid" id="itemsGrid"></div>
       <div class="pay-section">
         <div style="display:flex;gap:0;align-items:stretch;">
-          <!-- PAYMENT/PRINT button — full width, horizontal layout: printer left, amount box right -->
+          
           <button id="mainPayBtn" onclick="directPrint()" style="
             flex:1;min-width:0;padding:0;border:none;border-radius:16px;
             background:linear-gradient(175deg,#43a047 0%,#2e7d32 50%,#1b5e20 100%);
@@ -2170,7 +2189,7 @@
             min-height:72px;
             transition:transform .1s,box-shadow .1s;
             -webkit-tap-highlight-color:transparent;">
-            <!-- بائیں: آئیکن + بڑا ✓ -->
+            
             <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:8px 18px;flex:0 0 auto;">
               <span style="font-size:26px;flex-shrink:0;filter:drop-shadow(0 2px 5px rgba(0,0,0,0.4));line-height:1;">🖨️</span>
               <span id="mainPayLabel" style="
@@ -2182,7 +2201,7 @@
                   0 0 18px rgba(180,255,180,0.6);
                 display:block;">✓</span>
             </div>
-            <!-- دائیں: رقم — علیحدہ گہرا بیک گراؤنڈ، بہت بڑے حروف میں -->
+            
             <div id="mainPayTotal" style="
               background:linear-gradient(135deg,#7f0000,#c62828,#e53935);
               border-left:3px solid rgba(255,255,255,0.25);
@@ -2196,19 +2215,19 @@
         </div>
       </div>
     </div>
-    <!-- ٹیبل پینل ہٹا دیا گیا -->
+    
   </div>
 </div>
 
-<!-- SUMMARY SCREEN -->
+
 <div id="screen-summary" class="screen">
   <div class="summary-wrap"><div class="summary-screen">
 
-    <!-- ===== NEW COMPACT TWO-COLUMN LAYOUT ===== -->
-    <!-- COLOR THEME QUICK SWITCHER (Home پر) -->
+    
+    
 
-    <!-- ===== SUMMARY METRIC BARS ===== -->
-    <!-- Opening Cash -->
+    
+    
     <div style="background:linear-gradient(135deg,#616161,#757575);border-radius:12px;padding:12px 14px;box-shadow:0 4px 12px rgba(0,0,0,0.25);margin-bottom:7px;">
       <div style="font-size:9px;font-family:'Arial Black',Arial,sans-serif;font-weight:900;color:rgba(255,255,255,0.85);letter-spacing:1px;margin-bottom:6px;">💰 OPENING CASH</div>
       <div style="font-size:24px;font-family:'Arial Black',Arial,sans-serif;font-weight:900;color:#fff;line-height:1.1;margin-bottom:8px;" id="dashOpening">Rs. 0</div>
@@ -2218,26 +2237,26 @@
         <button onclick="saveOpeningCash()" style="padding:8px 14px;border:none;border-radius:8px;background:#fff;color:#1565c0;font-family:'Arial Black',Arial,sans-serif;font-weight:900;font-size:13px;cursor:pointer;white-space:nowrap;flex-shrink:0;">✅ SAVE</button>
       </div>
     </div>
-    <!-- Net Sales -->
+    
     <div style="background:linear-gradient(135deg,#1565c0,#1976d2);border-radius:12px;padding:12px 14px;box-shadow:0 4px 12px rgba(21,101,192,0.35);margin-bottom:7px;">
       <div style="font-size:9px;font-family:'Arial Black',Arial,sans-serif;font-weight:900;color:rgba(255,255,255,0.75);letter-spacing:1px;margin-bottom:4px;">📊 TOTAL SALE AMOUNT</div>
       <div style="font-size:28px;font-family:'Arial Black',Arial,sans-serif;font-weight:900;color:#fff;line-height:1.1;" id="dashSales">Rs. 0</div>
       <div style="display:none;" id="dashBillsCount"></div>
     </div>
-    <!-- Expenditure -->
+    
     <div style="background:linear-gradient(135deg,#e65100,#ef6c00);border-radius:12px;padding:12px 14px;box-shadow:0 4px 12px rgba(230,81,0,0.35);margin-bottom:7px;">
       <div style="font-size:9px;font-family:'Arial Black',Arial,sans-serif;font-weight:900;color:rgba(255,255,255,0.75);letter-spacing:1px;margin-bottom:4px;">💸 EXPENDITURE</div>
       <div style="font-size:28px;font-family:'Arial Black',Arial,sans-serif;font-weight:900;color:#fff;line-height:1.1;" id="dashExpenses">Rs. 0</div>
       <div style="font-size:9px;color:rgba(255,255,255,0.7);margin-top:4px;font-family:'Arial Black',Arial,sans-serif;" id="dashExpCount"></div>
     </div>
-    <!-- Cash In Hand -->
+    
     <div style="background:linear-gradient(135deg,#2e7d32,#388e3c);border-radius:12px;padding:12px 14px;box-shadow:0 4px 12px rgba(46,125,50,0.35);margin-bottom:10px;">
       <div style="font-size:9px;font-family:'Arial Black',Arial,sans-serif;font-weight:900;color:rgba(255,255,255,0.75);letter-spacing:1px;margin-bottom:4px;">🏦 CASH IN HAND</div>
       <div style="font-size:28px;font-family:'Arial Black',Arial,sans-serif;font-weight:900;color:#fff;line-height:1.1;" id="dashNet">Rs. 0</div>
       <div style="font-size:9px;color:rgba(255,255,255,0.75);margin-top:4px;font-family:'Arial Black',Arial,sans-serif;" id="dashNetSub">Opening + Sales − Expenses</div>
     </div>
 
-    <!-- ===== خرچ انٹری فارم ===== -->
+    
     <div style="background:linear-gradient(135deg,#b71c1c,#c62828,#e53935);border-radius:12px;padding:10px;box-shadow:0 3px 10px rgba(198,40,40,0.35);margin-bottom:8px;">
       <div style="font-size:8px;font-family:'Arial Black',Arial,sans-serif;font-weight:900;color:rgba(255,255,255,0.75);letter-spacing:1px;margin-bottom:6px;">💸 نیا خرچ لکھیں</div>
       <div style="background:rgba(0,0,0,0.2);border-radius:8px;padding:7px;margin-bottom:7px;">
@@ -2258,16 +2277,16 @@
       <div id="expInlineList" style="overflow-y:auto;max-height:220px;margin-top:4px;"></div>
     </div>
 
-    <!-- Expense list hidden (now inline above) -->
+    
     <div style="display:none;"><div id="expListCard"><div id="expList"></div></div></div>
 
-    <!-- ===== SALE HISTORY ===== -->
+    
     <div class="summary-card">
       <h3 style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-bottom:8px;">
         🧾 SALE HISTORY
         <button id="histFilterAll" onclick="_histFilter('all')" style="padding:3px 10px;border:none;border-radius:6px;background:#555;color:#fff;font-family:'Arial Black',Arial,sans-serif;font-size:10px;font-weight:900;cursor:pointer;">ALL</button>
       </h3>
-      <!-- Totals row -->
+      
       <div style="display:flex;gap:6px;margin-bottom:8px;">
         <div id="histTotCash" style="flex:1;background:linear-gradient(135deg,#2e7d32,#388e3c);border-radius:8px;padding:7px 10px;border:2px solid transparent;">
           <div style="font-size:8px;font-family:'Arial Black',Arial,sans-serif;font-weight:900;color:rgba(255,255,255,0.75);letter-spacing:0.5px;">💵 TOTAL CASH</div>
@@ -2277,7 +2296,7 @@
       <div id="saleHistory"><div style="text-align:center;color:var(--muted);padding:14px;font-size:12px;">No bills yet</div></div>
     </div>
 
-    <!-- Hidden legacy elements for JS compatibility -->
+    
     <div style="display:none;">
       <span id="showOpening"></span><span id="sumBills"></span><span id="sumCash"></span>
       <span id="sumCard"></span><span id="sumTotal"></span><span id="sumExp"></span>
@@ -2287,7 +2306,7 @@
       <button id="restoreDayBtn" onclick="restoreDay()"></button>
     </div>
 
-    <!-- EOD + End Day -->
+    
     <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px;margin-bottom:8px;">
       <button onclick="printQuickReport()" style="width:100%;padding:14px;border:none;border-radius:12px;background:linear-gradient(135deg,#4a148c,#6a1b9a);color:#fff;font-size:15px;font-family:'Arial Black',Arial,sans-serif;font-weight:900;cursor:pointer;box-shadow:0 5px 0 #28006a,0 7px 16px rgba(74,20,140,0.45),inset 0 1px 0 rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;gap:10px;letter-spacing:.5px;">
         🖨️ <span>PRINT REPORT</span>
@@ -2296,7 +2315,7 @@
         <span style="font-size:22px;">🌙</span><span>END OF THE DAY</span>
       </button>
     </div>
-    <!-- Day Locked Banner -->
+    
     <div id="dayLockedBanner" style="display:none;background:linear-gradient(135deg,#3d0000,#7f0000);border-radius:12px;padding:14px;text-align:center;margin-bottom:8px;border:2px solid #c62828;">
       <div style="font-size:22px;margin-bottom:4px;">🔒</div>
       <div style="font-family:'Arial Black',Arial,sans-serif;font-weight:900;font-size:15px;color:#ff8a80;letter-spacing:.5px;">DAY LOCKED</div>
@@ -2309,15 +2328,15 @@
 </div>
 
 
-<!-- SETTINGS SCREEN -->
+
 <div id="screen-settings" class="screen">
   <div class="settings-screen">
 
 
-    <!-- تھیم سیٹنگ ہٹا دی — مین پیج کے اوپر رنگ بار سے تھیم بدلیں -->
+    
     <div id="themeGrid" style="display:none;"></div>
 
-    <!-- ═══ SHARE APP — لنک اور پیغام یہاں سے بھی ایڈٹ کر سکتے ہیں ═══ -->
+    
     <div class="settings-card">
       <h3>📤 Share App</h3>
       <div style="font-size:11px;color:#a06020;font-weight:bold;margin-bottom:8px;">
@@ -2333,7 +2352,7 @@
 
 
 
-    <!-- ===== BILL TEMPLATE CARD ===== -->
+    
     <div class="settings-card">
       <h3>&#128203; بل سیٹنگ — Bill Template</h3>
       <div style="font-size:11px;color:#a06020;font-weight:bold;margin-bottom:8px;">دکان کا نام، سب ہیڈنگ، فوٹر — سب اپنی مرضی کا</div>
@@ -2349,8 +2368,7 @@
       <button class="manage-btn mbtn-save" style="width:100%;" onclick="saveBillCfg()">&#9989; بل سیٹنگ محفوظ کریں</button>
     </div>
 
-    <!-- ═══ PRINT LAYOUT SETTINGS — یہاں ایک بار سیٹ کریں، ہر پرنٹ خودکار اسی طرح آئے گا۔
-         سپیڈی بلنگ کے دوران یہ آپشنز کہیں نظر نہیں آتیں — صرف یہاں سیٹنگز میں ═══ -->
+    
     <div class="settings-card">
       <h3>🖨️ Print Layout Settings</h3>
       <div style="font-size:11px;color:#a06020;font-weight:bold;margin-bottom:10px;">
@@ -2358,13 +2376,13 @@
         روزمرہ کی تیز بلنگ کے دوران یہ آپشنز نہیں دکھائی جاتیں۔
       </div>
 
-      <!-- لائیو پریویو -->
+      
       <div style="text-align:center;background:#fff;border:1.5px solid #ffe0b2;border-radius:12px;padding:10px;margin-bottom:12px;">
         <div style="font-size:10px;color:#a06020;font-weight:bold;margin-bottom:6px;">📋 لائیو پریویو</div>
         <img id="printLayoutPreviewImg" style="max-width:100%;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,0.15);">
       </div>
 
-      <!-- فونٹ سلیکشن -->
+      
       <label style="font-size:10px;font-weight:bold;color:#a06020;">🔤 فونٹ</label>
       <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:10px;">
         <button id="imgfBtn0" onclick="setImgFont('arial-black');refreshPrintLayoutPreview()" style="padding:7px 2px;border-radius:8px;border:1.5px solid #ffcc80;background:#fff;color:#ef6c00;font-size:10px;font-weight:900;cursor:pointer;">Arial Black</button>
@@ -2373,7 +2391,7 @@
         <button id="imgfBtn3" onclick="setImgFont('urdu');refreshPrintLayoutPreview()" style="padding:7px 2px;border-radius:8px;border:1.5px solid #ffcc80;background:#fff;color:#ef6c00;font-size:10px;font-weight:900;cursor:pointer;">اردو</button>
       </div>
 
-      <!-- تھیم رنگ -->
+      
       <label style="font-size:10px;font-weight:bold;color:#a06020;">🎨 بل تھیم رنگ</label>
       <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:10px;">
         <button id="bthBtn0" onclick="setBillTheme('classic');refreshPrintLayoutPreview()" style="padding:7px 2px;border-radius:8px;border:1.5px solid #999;background:#fff;color:#333;font-size:10px;font-weight:900;cursor:pointer;">Classic</button>
@@ -2382,21 +2400,21 @@
         <button id="bthBtn3" onclick="setBillTheme('royal');refreshPrintLayoutPreview()" style="padding:7px 2px;border-radius:8px;border:1.5px solid #ce93d8;background:#f3e5f5;color:#4a148c;font-size:10px;font-weight:900;cursor:pointer;">Royal</button>
       </div>
 
-      <!-- آئٹم سیدھ (Alignment) -->
+      
       <label style="font-size:10px;font-weight:bold;color:#a06020;">↔️ آئٹم کے نام کی سیدھ</label>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px;">
         <button id="alignBtnLeft" onclick="setItemAlign('left')" style="padding:8px;border-radius:8px;border:1.5px solid #ef6c00;background:#ef6c00;color:#fff;font-size:11px;font-weight:900;cursor:pointer;">⬅️ بائیں (Left)</button>
         <button id="alignBtnCenter" onclick="setItemAlign('center')" style="padding:8px;border-radius:8px;border:1.5px solid #ef6c00;background:#fff;color:#ef6c00;font-size:11px;font-weight:900;cursor:pointer;">⏺️ درمیان (Center)</button>
       </div>
 
-      <!-- بولڈ آئٹمز -->
+      
       <label style="font-size:10px;font-weight:bold;color:#a06020;">🔠 آئٹمز کی موٹائی</label>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px;">
         <button id="boldBtnOn" onclick="setBoldItems(true)" style="padding:8px;border-radius:8px;border:1.5px solid #ef6c00;background:#ef6c00;color:#fff;font-size:11px;font-weight:900;cursor:pointer;">🔲 بولڈ</button>
         <button id="boldBtnOff" onclick="setBoldItems(false)" style="padding:8px;border-radius:8px;border:1.5px solid #ef6c00;background:#fff;color:#ef6c00;font-size:11px;font-weight:400;cursor:pointer;">▫️ باریک</button>
       </div>
 
-      <!-- رو ہائٹ -->
+      
       <label style="font-size:10px;font-weight:bold;color:#a06020;">↕️ رو (Row) کی اونچائی</label>
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
         <span style="font-size:11px;color:#a06020;">چھوٹا</span>
@@ -2405,7 +2423,7 @@
       </div>
       <div style="text-align:center;font-weight:bold;color:#ef6c00;margin-bottom:10px;"><span id="rowScaleLabel">100%</span></div>
 
-      <!-- پرنٹ فونٹ سائز سکیل -->
+      
       <label style="font-size:10px;font-weight:bold;color:#a06020;">🔍 پرنٹ لکھائی کا سائز</label>
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
         <span style="font-size:11px;color:#a06020;">A</span>
@@ -2414,21 +2432,21 @@
       </div>
       <div style="text-align:center;font-weight:bold;color:#ef6c00;margin-bottom:10px;"><span id="printFontScaleLabel">100%</span></div>
 
-      <!-- انوائس سٹائل -->
+      
       <label style="font-size:10px;font-weight:bold;color:#a06020;">📄 پرنٹ/شیئر سٹائل</label>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px;">
         <button id="invStyleThermal" onclick="setInvoiceStyle('thermal')" style="padding:8px;border-radius:8px;border:1.5px solid #1565c0;background:#1565c0;color:#fff;font-size:11px;font-weight:900;cursor:pointer;">🧾 تھرمل رسید</button>
         <button id="invStyleA4" onclick="setInvoiceStyle('a4')" style="padding:8px;border-radius:8px;border:1.5px solid #1565c0;background:#fff;color:#1565c0;font-size:11px;font-weight:900;cursor:pointer;">📄 A4 سٹائل</button>
       </div>
 
-      <!-- ٹیسٹ شیئر بٹن -->
+      
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
         <button onclick="testShareWhatsApp()" style="padding:10px 6px;border:none;border-radius:10px;background:linear-gradient(135deg,#25d366,#128c45);color:#fff;font-size:12px;font-weight:900;cursor:pointer;">📤 ٹیسٹ واٹس ایپ</button>
         <button onclick="testSaveImage()" style="padding:10px 6px;border:none;border-radius:10px;background:linear-gradient(135deg,#6a1b9a,#9c27b0);color:#fff;font-size:12px;font-weight:900;cursor:pointer;">🖼️ ٹیسٹ سیو امیج</button>
       </div>
     </div>
 
-    <!-- ٹیبل سیٹنگ کارڈ ہٹا دیا گیا — ٹیبل سسٹم مکمل طور پر ختم، صرف Counter استعمال ہوتا ہے -->
+    
 
 
     <div class="settings-card">
@@ -2472,7 +2490,7 @@
 
     <div class="settings-card">
       <h3>📋 Menu Items <span id="manageItemCount" style="font-weight:normal;color:#a06020;font-size:11px;"></span></h3>
-      <!-- Search Bar -->
+      
       <div style="position:relative;margin-bottom:8px;">
         <span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:16px;pointer-events:none;">🔍</span>
         <input id="menuSearchInput" class="manage-input"
@@ -2526,13 +2544,13 @@
           </div>
         </a>
       </div>
-      <!-- Owner Panel Button -->
-      <!-- OWNER PANEL: ABOUT heading پر 5 بار ٹیپ کریں -->
+      
+      
     </div>
   </div>
 </div>
 
-<!-- BILL PREVIEW + PAYMENT MODAL (all-in-one) -->
+
 <div class="bill-preview-modal" id="billPreviewModal">
   <div class="bill-preview-box">
     <div class="bill-preview-header">
@@ -2544,10 +2562,10 @@
       <button class="pay-mode-btn cash" id="pmbCash" onclick="selectPayMode('cash')" style="width:100%;">💵 CASH RECEIVED</button>
     </div>
     <div class="alt-row" id="altRow">
-      <!-- WhatsApp & Save buttons — footer میں منتقل ہو گئے -->
+      
     </div>
       <div class="bill-preview-footer">
-      <!-- Fallback complete row — صرف process/ok flow میں دکھے -->
+      
       <div id="fallbackCompleteRow" style="display:none;flex-direction:column;gap:7px;">
         <button onclick="fallbackComplete()" style="
           width:100%;padding:14px 4px;border:none;border-radius:11px;
@@ -2558,12 +2576,12 @@
           💰 <span>Payment Received</span>
         </button>
       </div>
-      <!-- مین پرنٹ بٹن — پوری چوڑائی (پرنٹر موجود ہو) -->
+      
       <button type="button" class="bpf-print" id="bpfPrintBtn" onclick="executePrint()" disabled>
         <span>🖨️</span>
         <span id="bpfPrintLabel">TAP CASH RECEIVED TO CONFIRM</span>
       </button>
-      <!-- نو پرنٹر row — آدھا آدھا (صرف تب دکھے جب پرنٹر نہ ہو) -->
+      
       <div id="noPrinterRow" style="display:none;gap:6px;grid-template-columns:1fr 1fr;">
         <button id="okCompleteBtn" onclick="completeWithoutPrint()" style="
           padding:11px 4px;border:none;border-radius:11px;
@@ -2587,21 +2605,21 @@
   </div>
 </div>
 
-<!-- ===== EOD REPORT MODAL ===== -->
+
 <div class="bill-preview-modal" id="eodReportModal">
   <div class="bill-preview-box" style="width:min(360px,96vw);max-height:92vh;">
-    <!-- Header -->
+    
     <div class="bill-preview-header" style="background:linear-gradient(135deg,#1b5e20,#2e7d32);">
       <span>📊 END OF DAY REPORT</span>
       <span id="eodDateLabel" style="font-size:11px;opacity:.85;"></span>
     </div>
 
-    <!-- Body — report content -->
+    
     <div id="eodReportContent" class="bill-preview-body" style="padding:0;"></div>
 
-    <!-- Footer -->
+    
     <div class="bill-preview-footer" style="gap:6px;">
-      <!-- WhatsApp & Save -->
+      
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
         <button class="alt-btn alt-btn-wa" onclick="shareEodReport()" style="
           padding:12px 6px;border:none;border-radius:10px;
@@ -2619,7 +2637,7 @@
           <span style="font-size:8px;color:rgba(255,255,255,0.7);font-family:'Arial Black',Arial,sans-serif;">Saved in Gallery</span>
         </button>
       </div>
-      <!-- Bluetooth Print -->
+      
       <button id="eodPrintBtn" onclick="printEodViaBluetooth()" style="
         width:100%;padding:16px;border:none;border-radius:13px;
         font-size:16px;font-family:var(--font-black);font-weight:900;
@@ -2638,16 +2656,16 @@
   </div>
 </div>
 
-<!-- IMAGE EDITOR MODAL — بہتر ورژن: فریم shape، صحیح کراپ، brightness، pinch zoom، PNG export -->
+
 <div class="img-edit-modal" id="imgEditModal">
 
-  <!-- ✅ FIXED HEADER — بند بٹن ہمیشہ اوپر -->
+  
   <div class="img-edit-header">
     <div class="img-edit-title">📷 EDIT <span id="imgEditItemName"></span></div>
     <button onclick="cancelImgEdit()" style="background:#c62828;color:#fff;border:none;border-radius:7px;padding:4px 14px;font-size:11px;font-family:'Arial Black',Arial,sans-serif;font-weight:900;cursor:pointer;">❌ بند</button>
   </div>
 
-  <!-- ✅ FIXED SAVE BAR — ہمیشہ اوپر نظر آئے، نیچے سکرول کرنے کی ضرورت نہیں -->
+  
   <div class="img-edit-savebar">
     <button class="img-edit-btn img-edit-confirm" onclick="confirmImgEdit()">✅ محفوظ کریں</button>
     <button class="img-edit-btn" onclick="confirmImgEditPng()" style="background:linear-gradient(160deg,#1565c0,#0d3c7a);color:#fff;">🏷️ PNG سیو</button>
@@ -2655,10 +2673,10 @@
 
   <div class="img-edit-box">
 
-    <!-- ✅ LEFT COLUMN — PINNED CARD VIEW، ہمیشہ الگ سے نظر آئے، کسی چیز کے نیچے نہ جائے -->
+    
     <div class="img-edit-left" id="imgEditLeft">
       <div style="font-size:8px;color:#ff9800;font-family:'Arial Black',Arial,sans-serif;font-weight:900;text-align:center;">🎯 مین صفحہ پر عین اسی طرح</div>
-      <!-- عین وہی .item-card structure/CSS جو buildMenu() میں استعمال ہوتا ہے -->
+      
       <div class="item-card has-img" id="livePreviewCard" style="width:128px;flex-shrink:0;box-shadow:0 0 0 2px #ff9800,0 2px 10px rgba(0,0,0,0.10);">
         <div class="card-body" id="livePreviewBody" style="z-index:2;position:relative;flex:1;">
           <canvas id="livePreviewCanvas" style="position:absolute;inset:0;width:100%;height:100%;display:block;"></canvas>
@@ -2689,21 +2707,21 @@
       </div>
     </div>
 
-    <!-- ✅ RIGHT COLUMN — بڑی سکرین (کمپیکٹ) + تمام کنٹرول، بغیر سکرول کے فٹ -->
+    
     <div class="img-edit-right">
 
-    <!-- IMAGE — reduced height, crop overlay on top -->
+    
     <div class="img-preview-wrap" id="imgPreviewWrap" style="position:relative;">
       <canvas id="imgEditCanvas"></canvas>
-      <!-- Crop selection overlay -->
+      
       <canvas id="cropOverlayCanvas" style="position:absolute;top:0;left:0;width:100%;height:100%;display:none;touch-action:none;cursor:crosshair;"></canvas>
       <div class="img-preview-hint" id="imgPreviewHint">👆 کھینچیں • چٹکی Zoom</div>
     </div>
 
-    <!-- ALL CONTROLS — compact, ایک ہی سکرین کے اندر فٹ، save bar ہمیشہ اوپر فکسڈ رہتی ہے -->
+    
     <div class="img-edit-controls">
 
-      <!-- Shape + Rotate — ایک row -->
+      
       <div style="display:flex;gap:3px;">
         <button id="frameBtn0" onclick="setImgFrame('square')" style="flex:1;padding:4px 1px;border:2px solid #ff9800;border-radius:6px;background:#ff9800;color:#fff;font-size:8px;font-family:'Arial Black',Arial,sans-serif;font-weight:900;cursor:pointer;">⬜چورس</button>
         <button id="frameBtn1" onclick="setImgFrame('rect')" style="flex:1;padding:4px 1px;border:2px solid #555;border-radius:6px;background:transparent;color:#ff9800;font-size:8px;font-family:'Arial Black',Arial,sans-serif;font-weight:900;cursor:pointer;">▬مستطیل</button>
@@ -2714,7 +2732,7 @@
         <button onclick="imgFlipH()" style="flex:1;padding:4px 1px;border:none;border-radius:6px;background:#444;color:#fff;font-size:11px;font-weight:900;cursor:pointer;">⇋</button>
       </div>
 
-      <!-- CROP ROW — rectangular + circular -->
+      
       <div style="display:flex;gap:3px;align-items:center;background:rgba(79,195,247,0.08);border-radius:7px;padding:3px 6px;border:1px solid rgba(79,195,247,0.25);">
         <span style="font-size:8px;color:#4fc3f7;font-family:'Arial Black',Arial,sans-serif;font-weight:900;flex-shrink:0;">✂️کراپ:</span>
         <button id="cropRectBtn" onclick="startCrop('rect')" style="flex:1;padding:4px 2px;border:2px solid #4fc3f7;border-radius:6px;background:transparent;color:#4fc3f7;font-size:8px;font-family:'Arial Black',Arial,sans-serif;font-weight:900;cursor:pointer;">▭ مستطیل</button>
@@ -2723,7 +2741,7 @@
         <button id="cropCancelBtn" onclick="cancelCrop()" style="flex:1;padding:4px 2px;border:2px solid #ef5350;border-radius:6px;background:transparent;color:#ef5350;font-size:8px;font-family:'Arial Black',Arial,sans-serif;font-weight:900;cursor:pointer;display:none;">✕ رد</button>
       </div>
 
-      <!-- ZOOM -->
+      
       <div class="img-ctrl-row">
         <div class="img-ctrl-label">🔍ZOOM<span id="zoomVal">100%</span></div>
         <input type="range" class="img-ctrl-slider" id="zoomSlider" min="50" max="400" value="100" oninput="imgZoomFromSlider(this.value)">
@@ -2733,7 +2751,7 @@
         </div>
       </div>
 
-      <!-- BRIGHTNESS -->
+      
       <div class="img-ctrl-row">
         <div class="img-ctrl-label">☀️BRIGHT<span id="brightVal">100%</span></div>
         <input type="range" class="img-ctrl-slider" id="brightSlider" min="30" max="220" value="100" oninput="imgBrightFromSlider(this.value)">
@@ -2743,7 +2761,7 @@
         </div>
       </div>
 
-      <!-- ENHANCE -->
+      
       <div class="img-ctrl-row">
         <div class="img-ctrl-label">✨ENHANCE<span id="contrastVal">100%</span></div>
         <input type="range" class="img-ctrl-slider" id="contrastSlider" min="60" max="180" value="100" oninput="imgContrastFromSlider(this.value)">
@@ -2753,7 +2771,7 @@
         </div>
       </div>
 
-      <!-- COLOR -->
+      
       <div class="img-ctrl-row">
         <div class="img-ctrl-label">🎨COLOR<span id="satVal">100%</span></div>
         <input type="range" class="img-ctrl-slider" id="satSlider" min="0" max="200" value="100" oninput="imgSatFromSlider(this.value)">
@@ -2763,7 +2781,7 @@
         </div>
       </div>
 
-      <!-- BG Remove + Filters — ایک row -->
+      
       <div style="display:flex;gap:3px;align-items:center;">
         <button id="bgWhiteBtn" onclick="applyBgWhite()" style="flex:1;padding:4px 2px;border:1.5px solid #fff;border-radius:6px;background:transparent;color:#fff;font-size:8px;font-family:'Arial Black',Arial,sans-serif;font-weight:900;cursor:pointer;">⬜سفید BG</button>
         <button id="bgTransBtn" onclick="applyBgTransparent()" style="flex:1;padding:4px 2px;border:1.5px solid #ab47bc;border-radius:6px;background:transparent;color:#ce93d8;font-size:8px;font-family:'Arial Black',Arial,sans-serif;font-weight:900;cursor:pointer;">🪄صاف PNG</button>
@@ -2773,7 +2791,7 @@
         <button onclick="setBgTolerance(10)" style="padding:3px 7px;border:none;border-radius:5px;background:#333;color:#fff;font-size:12px;font-weight:900;cursor:pointer;">+</button>
       </div>
 
-      <!-- Quick Filters — ایک row 8 buttons -->
+      
       <div style="display:grid;grid-template-columns:repeat(8,1fr);gap:3px;">
         <button onclick="applyImgPreset('Normal')" id="fpNormal" style="padding:4px 1px;border:1.5px solid #ff9800;border-radius:5px;background:#ff9800;color:#fff;font-size:7px;font-family:'Arial Black',Arial,sans-serif;font-weight:900;cursor:pointer;">✓Norm</button>
         <button onclick="applyImgPreset('Vivid')" id="fpVivid" style="padding:4px 1px;border:1.5px solid #555;border-radius:5px;background:transparent;color:#ffcc80;font-size:7px;font-family:'Arial Black',Arial,sans-serif;font-weight:900;cursor:pointer;">🌈Vivid</button>
@@ -2785,14 +2803,14 @@
         <button onclick="applyImgPreset('Food')" id="fpFood" style="padding:4px 1px;border:1.5px solid #555;border-radius:5px;background:transparent;color:#ffcc80;font-size:7px;font-family:'Arial Black',Arial,sans-serif;font-weight:900;cursor:pointer;">🍽️Food</button>
       </div>
 
-    </div><!-- /controls -->
-    </div><!-- /img-edit-right -->
+    </div>
+    </div>
 
-  </div><!-- /box -->
+  </div>
 </div>
 
 
-<!-- EDIT ITEM MODAL -->
+
 <div class="edit-item-modal" id="editItemModal">
   <div class="edit-item-box">
     <h3>✏️ Edit Item</h3>
@@ -8285,7 +8303,7 @@ function handleRestoreFileSelected(inputEl){
 // ============================================================
 if('serviceWorker' in navigator){
   window.addEventListener('load', function(){
-    navigator.serviceWorker.register('./service-worker.js').catch(function(err){
+    navigator.serviceWorker.register('./sw.js').catch(function(err){
       console.warn('Service worker registration failed:', err);
     });
   });
@@ -8464,7 +8482,7 @@ setInterval(async ()=>{
 </script>
 
 
-<!-- ===== ZOOM SLIDER + SHAPE TOGGLE JS ===== -->
+
 <script>
 (function() {
 
@@ -8526,13 +8544,13 @@ setInterval(async ()=>{
 })();
 </script>
 
-<!-- ===== BOTTOM ACTION BAR — سبز گرڈ + گولڈن بارڈر ===== -->
+
 <div id="bottomActionBar">
 
-  <!-- Printer dummy hidden -->
+  
   <span id="babPrinterBtn" style="display:none"><span id="babDot"></span><span id="babPrinterLabel"></span></span>
 
-  <!-- LEFT: SUMMARY -->
+  
   <button class="bab-btn bab-summary" id="babSummaryBtn" onclick="switchTab('summary', this); syncBabActive(this);" title="Summary">
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
       <rect x="3" y="3" width="7" height="7"/>
@@ -8543,7 +8561,7 @@ setInterval(async ()=>{
     <span>SUMMARY</span>
   </button>
 
-  <!-- CENTRE: HOME (بڑا) -->
+  
   <button class="bab-btn bab-home" id="babHomeBtn" onclick="switchTab('pos',null); syncBabActive(this);" title="Home"
     style="flex:1.3; transform:scale(1.05); z-index:2;">
     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#3e2000" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
@@ -8553,7 +8571,7 @@ setInterval(async ()=>{
     <span>HOME</span>
   </button>
 
-  <!-- RIGHT: SETTINGS -->
+  
   <button class="bab-btn bab-settings" id="babSettingsBtn" onclick="switchTab('settings', null); syncBabActive(this);" title="Settings">
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
       <circle cx="12" cy="12" r="3"/>
