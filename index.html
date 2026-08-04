@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FF001</title>
+<title>FF002</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#2e7d32">
 <link id="gfontLink" rel="stylesheet" href="">
@@ -1892,11 +1892,18 @@
           <button type="button" data-width="80" onclick="setPaperWidth(80)" style="padding:10px 6px;border-radius:10px;border:1.5px solid #ddd;background:#f5f5f5;font-weight:900;cursor:pointer;">80mm</button>
         </div>
       </div>
+
+      <!-- ہلکا/سادہ پرنٹ موڈ — کمزور/سستے پرنٹر کے لیے، کم سیاہی، تیز پرنٹ -->
+      <div style="margin-top:12px;text-align:center;">
+        <button type="button" id="pmLightPrintBtn" onclick="toggleLightPrint()" style="width:100%;padding:11px 8px;border-radius:10px;border:1.5px solid #ddd;background:#f5f5f5;font-weight:900;cursor:pointer;font-size:12.5px;">🎨 مکمل ڈیزائن پرنٹ — آن</button>
+        <div style="font-size:10.5px;color:var(--muted,#888);margin-top:4px;">پرنٹر کمزور ہو یا پرنٹ دھیمی/بھاری آ رہی ہو تو ہلکا/سادہ موڈ لگائیں</div>
+      </div>
     </div>
   </div>
 </div>
 <style>
   #pmPaperWidthGrid button.active { background:linear-gradient(135deg,#2e7d32,#1b5e20)!important; color:#fff!important; border-color:#1b5e20!important; }
+  #pmLightPrintBtn.active { background:linear-gradient(135deg,#f9a825,#f57f17)!important; color:#fff!important; border-color:#f57f17!important; }
 </style>
 
 <!-- POS SCREEN -->
@@ -4541,8 +4548,10 @@ function getBillCfg(){
     footer:   'THANK YOU! VISIT AGAIN',
     zoom:     100,
     paperWidth: 58,   // 58 | 80 (mm) — تھرمل راسٹر پرنٹنگ کے لیے
+    lightPrint: false, // true = کمزور/سستے پرنٹر کے لیے سادہ، کم سیاہی والا پرنٹ
   }));
   if(!cfg.paperWidth) cfg.paperWidth = 58;
+  if(typeof cfg.lightPrint !== 'boolean') cfg.lightPrint = false;
   return cfg;
 }
 function setPaperWidth(mm){
@@ -4553,6 +4562,20 @@ function setPaperWidth(mm){
     b.classList.toggle('active', Number(b.dataset.width)===mm);
   });
   showToast('✅ کاغذ کی چوڑائی: '+mm+'mm');
+}
+function toggleLightPrint(){
+  const cfg = getBillCfg();
+  cfg.lightPrint = !cfg.lightPrint;
+  localStorage.setItem('ff_bill_cfg', JSON.stringify(cfg));
+  _refreshLightPrintBtn();
+  showToast(cfg.lightPrint ? '🪶 ہلکا/سادہ پرنٹ آن — کمزور پرنٹر کے لیے' : '🎨 مکمل ڈیزائن پرنٹ آن');
+}
+function _refreshLightPrintBtn(){
+  const btn = document.getElementById('pmLightPrintBtn');
+  if(!btn) return;
+  const on = getBillCfg().lightPrint;
+  btn.classList.toggle('active', on);
+  btn.textContent = on ? '🪶 ہلکا/سادہ پرنٹ — آن (کمزور پرنٹر)' : '🎨 مکمل ڈیزائن پرنٹ — آن';
 }
 function buildBillHtml(sale){
   const cfg = getBillCfg();
@@ -4916,7 +4939,7 @@ function _getFontFamily(id){
 // ============================================================
 // WHATSAPP SHARE & SAVE IMAGE — Professional Poster Design
 // ============================================================
-function _buildBillCanvas(sale, forPrint){
+function _buildBillCanvas(sale, forPrint, lightMode){
   return new Promise(resolve=>{
     const cfg     = getBillCfg();
     const items   = sale.items || [];
@@ -4926,6 +4949,13 @@ function _buildBillCanvas(sale, forPrint){
     // اسکرین/شیئر پر ہمیشہ منتخب شدہ اصل نستعلیق فونٹ ہی نظر آتا رہے گا — یہ صرف پرنٹ کینوس کے لیے خاص ہے۔
     const fontFam = (forPrint && isUrdu) ? 'Arial, sans-serif' : _getFontFamily(_imgFont);
     const printPlainFont = !!(forPrint && isUrdu);
+    lightMode = !!lightMode;
+
+    // Bill Preview کے فونٹ سائز سلائیڈر (9–15px) کو یہاں بھی لاگو کریں — تاکہ
+    // جو سائز Preview میں منتخب کیا جائے وہی پرنٹ/شیئر پر نظر آئے
+    const _bfs = parseInt(localStorage.getItem('ff_bill_font_size')||'11') || 11;
+    const fscale = Math.min(1.5, Math.max(0.75, _bfs / 11));
+    const S = (n) => Math.round(n * fscale);
 
     // اردو فونٹ لوڈ کریں اگر منتخب ہو (پرنٹ کے لیے سادہ فونٹ استعمال ہو تو لوڈ کی ضرورت نہیں)
     const fontPromise = (isUrdu && !printPlainFont && document.fonts && document.fonts.load)
@@ -4951,23 +4981,21 @@ function _buildBillCanvas(sale, forPrint){
 
     const C_ORANGE   = TC.head1;
     const C_ORANGE2  = TC.head2;
-    const C_GREEN    = TC.totBg1;
     const C_GREEN2   = TC.hdrBg;
-    const C_GREEN_LT = TC.altRow;
-    const C_AMBER    = '#ff8f00';
+    const C_GREEN_LT = lightMode ? '#ffffff' : TC.altRow;
     const C_WHITE    = '#ffffff';
     const C_DARK     = '#1a1a1a';
     const C_GRAY     = '#555';
-    const C_LITE     = TC.bodyBg;
-    const C_BORDER   = TC.border;
+    const C_LITE     = lightMode ? '#ffffff' : TC.bodyBg;
+    const C_BORDER   = lightMode ? '#000000' : TC.border;
 
-    // ===== اونچائی کا اندازہ =====
-    const ROW_H   = 38;
-    const HEAD_H  = isUrdu ? 160 : 140;
-    const META_H  = 60;
-    const TBL_H   = ROW_H * (items.length + 1) + 16;
-    const TOT_H   = 90;
-    const FOOT_H  = 80;
+    // ===== اونچائی کا اندازہ (فونٹ سائز سکیل کے مطابق) =====
+    const ROW_H   = S(38);
+    const HEAD_H  = S(isUrdu ? 160 : 140);
+    const META_H  = S(60);
+    const TBL_H   = ROW_H * (items.length + 1) + S(16);
+    const TOT_H   = S(90);
+    const FOOT_H  = S(80);
     const H = HEAD_H + META_H + TBL_H + TOT_H + FOOT_H + PAD*2;
 
     const canvas = document.createElement('canvas');
@@ -4979,69 +5007,74 @@ function _buildBillCanvas(sale, forPrint){
     ctx.fillStyle = C_LITE;
     ctx.fillRect(0, 0, W, H);
 
-    // ===== اوپر کا رنگین header band =====
-    const grad = ctx.createLinearGradient(0, 0, W, HEAD_H);
-    grad.addColorStop(0, C_ORANGE);
-    grad.addColorStop(1, C_ORANGE2);
-    ctx.fillStyle = grad;
-    // rounded top
-    ctx.beginPath();
-    ctx.moveTo(0, 20);
-    ctx.quadraticCurveTo(0, 0, 20, 0);
-    ctx.lineTo(W-20, 0);
-    ctx.quadraticCurveTo(W, 0, W, 20);
-    ctx.lineTo(W, HEAD_H);
-    ctx.lineTo(0, HEAD_H);
-    ctx.closePath();
-    ctx.fill();
+    // ===== اوپر کا header band — لائٹ موڈ میں فلیٹ سفید/باڈر (کم سیاہ رقبہ = ہلکا/تیز پرنٹ) =====
+    if(lightMode){
+      ctx.fillStyle = C_WHITE;
+      ctx.fillRect(0, 0, W, HEAD_H);
+    } else {
+      const grad = ctx.createLinearGradient(0, 0, W, HEAD_H);
+      grad.addColorStop(0, C_ORANGE);
+      grad.addColorStop(1, C_ORANGE2);
+      ctx.fillStyle = grad;
+      // rounded top
+      ctx.beginPath();
+      ctx.moveTo(0, 20);
+      ctx.quadraticCurveTo(0, 0, 20, 0);
+      ctx.lineTo(W-20, 0);
+      ctx.quadraticCurveTo(W, 0, W, 20);
+      ctx.lineTo(W, HEAD_H);
+      ctx.lineTo(0, HEAD_H);
+      ctx.closePath();
+      ctx.fill();
+    }
 
     // ===== Header: دکان کا نام =====
-    ctx.fillStyle = C_WHITE;
+    ctx.fillStyle = lightMode ? C_DARK : C_WHITE;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'top';
 
     // اوپر emoji + نام
-    let hy = 22;
-    ctx.font = isUrdu ? `700 28px ${fontFam}` : `900 32px ${fontFam}`;
-    ctx.fillText('🍔  ' + (cfg.shopName || 'FAST FOOD POS'), W/2, hy);
-    hy += isUrdu ? 42 : 44;
+    let hy = S(22);
+    ctx.font = isUrdu ? `700 ${S(28)}px ${fontFam}` : `900 ${S(32)}px ${fontFam}`;
+    ctx.fillText((lightMode?'':'🍔  ') + (cfg.shopName || 'FAST FOOD POS'), W/2, hy);
+    hy += S(isUrdu ? 42 : 44);
 
     if(cfg.subHead){
-      ctx.font = `400 16px ${fontFam}`;
-      ctx.fillStyle = 'rgba(255,255,255,0.88)';
+      ctx.font = `400 ${S(16)}px ${fontFam}`;
+      ctx.fillStyle = lightMode ? C_GRAY : 'rgba(255,255,255,0.88)';
       ctx.fillText(cfg.subHead, W/2, hy);
-      hy += 22;
+      hy += S(22);
     }
     if(cfg.phone){
-      ctx.font = `700 15px ${fontFam}`;
-      ctx.fillStyle = 'rgba(255,255,255,0.85)';
-      ctx.fillText('📞  ' + cfg.phone, W/2, hy);
-      hy += 22;
+      ctx.font = `700 ${S(15)}px ${fontFam}`;
+      ctx.fillStyle = lightMode ? C_GRAY : 'rgba(255,255,255,0.85)';
+      ctx.fillText((lightMode?'Tel: ':'📞  ') + cfg.phone, W/2, hy);
+      hy += S(22);
     }
 
-    // Header separator line (white)
-    ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+    // Header separator line
+    ctx.strokeStyle = lightMode ? '#000' : 'rgba(255,255,255,0.4)';
     ctx.lineWidth = 1.5;
     ctx.beginPath(); ctx.moveTo(PAD, HEAD_H-1); ctx.lineTo(W-PAD, HEAD_H-1); ctx.stroke();
 
     // ===== META section (Inv, Table, Date) =====
-    let my = HEAD_H + 12;
+    let my = HEAD_H + S(12);
     const tName = sale.table==='C' ? (isUrdu?'کاؤنٹر':'Counter') : (getTableName(sale.table)||('Table '+sale.table));
     const invLabel  = isUrdu ? 'بل نمبر' : 'Inv#';
 
     ctx.fillStyle = C_DARK;
-    ctx.font = isUrdu ? `700 16px ${fontFam}` : `900 16px ${fontFam}`;
+    ctx.font = isUrdu ? `700 ${S(16)}px ${fontFam}` : `900 ${S(16)}px ${fontFam}`;
     ctx.textAlign = 'center';
     ctx.fillText(invLabel + ' ' + (sale.invNo||'—') + '   |   ' + tName, W/2, my);
-    my += 24;
+    my += S(24);
 
-    ctx.font = `400 13px ${fontFam}`;
+    ctx.font = `400 ${S(13)}px ${fontFam}`;
     ctx.fillStyle = C_GRAY;
     const dateStr = isUrdu
       ? new Date(sale.id||Date.now()).toLocaleDateString('en-PK',{weekday:'long',day:'numeric',month:'long',year:'numeric'})
       : (sale.dateStr || new Date().toLocaleString('en-PK'));
     ctx.fillText(dateStr, W/2, my);
-    my += 18;
+    my += S(18);
 
     // thin separator
     ctx.strokeStyle = '#ddd';
@@ -5049,9 +5082,9 @@ function _buildBillCanvas(sale, forPrint){
     ctx.beginPath(); ctx.moveTo(PAD, my); ctx.lineTo(W-PAD, my); ctx.stroke();
 
     // ===== TABLE =====
-    let ty = my + 8;
+    let ty = my + S(8);
 
-    // کالم تعریف
+    // کالم تعریف — دائیں/بائیں سیدھ (right/left align) اردو/انگلش کے مطابق، باقی سب سینٹر
     const cols = isUrdu
       ? [ {k:'total', w:0.18}, {k:'price', w:0.15}, {k:'qty', w:0.10}, {k:'item', w:0.42}, {k:'sno', w:0.10} ]
       : [ {k:'sno',   w:0.08}, {k:'item', w:0.44},  {k:'qty', w:0.12}, {k:'price',w:0.18}, {k:'total',w:0.18} ];
@@ -5063,33 +5096,37 @@ function _buildBillCanvas(sale, forPrint){
     let cx = PAD;
     const colX = cols.map(c=>{ const x=cx; cx+=iW*c.w; return x; });
 
-    // ===== ہیڈر row — گہرا سبز =====
+    // ===== ہیڈر row =====
     const hdrTop = ty;
     const hdrH   = ROW_H;
-    ctx.fillStyle = C_GREEN2;
+    ctx.fillStyle = lightMode ? C_WHITE : C_GREEN2;
     ctx.fillRect(PAD, hdrTop, iW, hdrH);
+    if(lightMode){
+      ctx.strokeStyle = '#000'; ctx.lineWidth = 1.5;
+      ctx.strokeRect(PAD, hdrTop, iW, hdrH);
+    }
 
-    ctx.fillStyle = C_WHITE;
-    ctx.font = isUrdu ? `700 14px ${fontFam}` : `900 13px ${fontFam}`;
+    ctx.fillStyle = lightMode ? C_DARK : C_WHITE;
+    ctx.font = isUrdu ? `700 ${S(14)}px ${fontFam}` : `900 ${S(13)}px ${fontFam}`;
     cols.forEach((c,i)=>{
       const align = (c.k==='item') ? (isUrdu?'right':'left') : 'center';
       ctx.textAlign = align;
       const tx = c.k==='item'
         ? (isUrdu ? colX[i]+iW*c.w-6 : colX[i]+6)
         : colX[i] + iW*c.w/2;
-      ctx.fillText(hdrs[i], tx, hdrTop + hdrH/2 - 7);
+      ctx.fillText(hdrs[i], tx, hdrTop + hdrH/2 - S(7));
     });
     ty += hdrH;
 
     // ===== آئٹم rows =====
     items.forEach((it, idx)=>{
       const rowTop = ty;
-      // alternating background
+      // alternating background — لائٹ موڈ میں سب سفید (کم سیاہی)
       ctx.fillStyle = idx%2===0 ? C_WHITE : C_GREEN_LT;
       ctx.fillRect(PAD, rowTop, iW, ROW_H);
 
       ctx.fillStyle = C_DARK;
-      ctx.font = isUrdu ? `700 14px ${fontFam}` : `900 13px ${fontFam}`;
+      ctx.font = isUrdu ? `700 ${S(14)}px ${fontFam}` : `900 ${S(13)}px ${fontFam}`;
 
       cols.forEach((c,i)=>{
         let val='';
@@ -5104,7 +5141,7 @@ function _buildBillCanvas(sale, forPrint){
         const tx = c.k==='item'
           ? (isUrdu ? colX[i]+iW*c.w-6 : colX[i]+6)
           : colX[i] + iW*c.w/2;
-        ctx.fillText(val, tx, rowTop + ROW_H/2 - 7);
+        ctx.fillText(val, tx, rowTop + ROW_H/2 - S(7));
       });
 
       // bottom border
@@ -5116,84 +5153,96 @@ function _buildBillCanvas(sale, forPrint){
     });
 
     // Table outer border
-    const tblH = ty - (my+8);
-    ctx.strokeStyle = C_GREEN2;
+    const tblH = ty - (my+S(8));
+    ctx.strokeStyle = lightMode ? '#000' : C_GREEN2;
     ctx.lineWidth = 2.5;
-    ctx.strokeRect(PAD, my+8, iW, tblH);
+    ctx.strokeRect(PAD, my+S(8), iW, tblH);
 
     // column dividers
-    ctx.strokeStyle = 'rgba(46,125,50,0.3)';
+    ctx.strokeStyle = lightMode ? '#000' : 'rgba(46,125,50,0.3)';
     ctx.lineWidth = 1;
     cols.forEach((c,i)=>{
       if(i===0) return;
-      ctx.beginPath(); ctx.moveTo(colX[i], my+8); ctx.lineTo(colX[i], ty); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(colX[i], my+S(8)); ctx.lineTo(colX[i], ty); ctx.stroke();
     });
 
-    ty += 14;
+    ty += S(14);
 
     // ===== TOTAL BOX =====
     const payLabel = sale.mode==='cash'?(isUrdu?'نقد':'CASH'):sale.mode==='card'?(isUrdu?'کارڈ':'CARD'):'';
     const totLabel = isUrdu ? ('کل رقم' + (payLabel?' | '+payLabel:'')) : ('TOTAL AMOUNT' + (payLabel?' | '+payLabel:''));
 
-    const totGrad = ctx.createLinearGradient(PAD, ty, PAD, ty+TOT_H);
-    totGrad.addColorStop(0, TC.totBg1);
-    totGrad.addColorStop(1, TC.totBg2);
-    ctx.fillStyle = totGrad;
-    ctx.strokeStyle = TC.hdrBg;
-    ctx.lineWidth = 2.5;
-    // rounded total box
-    const tr = 10;
-    ctx.beginPath();
-    ctx.moveTo(PAD+tr, ty);
-    ctx.lineTo(W-PAD-tr, ty);
-    ctx.quadraticCurveTo(W-PAD, ty, W-PAD, ty+tr);
-    ctx.lineTo(W-PAD, ty+TOT_H-tr);
-    ctx.quadraticCurveTo(W-PAD, ty+TOT_H, W-PAD-tr, ty+TOT_H);
-    ctx.lineTo(PAD+tr, ty+TOT_H);
-    ctx.quadraticCurveTo(PAD, ty+TOT_H, PAD, ty+TOT_H-tr);
-    ctx.lineTo(PAD, ty+tr);
-    ctx.quadraticCurveTo(PAD, ty, PAD+tr, ty);
-    ctx.closePath();
-    ctx.fill(); ctx.stroke();
+    if(lightMode){
+      ctx.fillStyle = C_WHITE;
+      ctx.strokeStyle = '#000';
+      ctx.lineWidth = 2.5;
+      ctx.strokeRect(PAD, ty, iW, TOT_H);
+    } else {
+      const totGrad = ctx.createLinearGradient(PAD, ty, PAD, ty+TOT_H);
+      totGrad.addColorStop(0, TC.totBg1);
+      totGrad.addColorStop(1, TC.totBg2);
+      ctx.fillStyle = totGrad;
+      ctx.strokeStyle = TC.hdrBg;
+      ctx.lineWidth = 2.5;
+      // rounded total box
+      const tr = 10;
+      ctx.beginPath();
+      ctx.moveTo(PAD+tr, ty);
+      ctx.lineTo(W-PAD-tr, ty);
+      ctx.quadraticCurveTo(W-PAD, ty, W-PAD, ty+tr);
+      ctx.lineTo(W-PAD, ty+TOT_H-tr);
+      ctx.quadraticCurveTo(W-PAD, ty+TOT_H, W-PAD-tr, ty+TOT_H);
+      ctx.lineTo(PAD+tr, ty+TOT_H);
+      ctx.quadraticCurveTo(PAD, ty+TOT_H, PAD, ty+TOT_H-tr);
+      ctx.lineTo(PAD, ty+tr);
+      ctx.quadraticCurveTo(PAD, ty, PAD+tr, ty);
+      ctx.closePath();
+      ctx.fill(); ctx.stroke();
+    }
 
-    ctx.fillStyle = TC.totLabel;
+    ctx.fillStyle = lightMode ? C_GRAY : TC.totLabel;
     ctx.textAlign = 'center';
-    ctx.font = isUrdu ? `700 16px ${fontFam}` : `900 15px ${fontFam}`;
-    ctx.fillText(totLabel, W/2, ty+14);
+    ctx.font = isUrdu ? `700 ${S(16)}px ${fontFam}` : `900 ${S(15)}px ${fontFam}`;
+    ctx.fillText(totLabel, W/2, ty+S(14));
 
-    ctx.fillStyle = '#fff';
-    ctx.font = isUrdu ? `700 38px ${fontFam}` : `900 40px ${fontFam}`;
-    ctx.fillText('Rs. ' + sale.total, W/2, ty+32);
+    ctx.fillStyle = lightMode ? '#000' : '#fff';
+    ctx.font = isUrdu ? `700 ${S(38)}px ${fontFam}` : `900 ${S(40)}px ${fontFam}`;
+    ctx.fillText('Rs. ' + sale.total, W/2, ty+S(32));
 
-    ty += TOT_H + 14;
+    ty += TOT_H + S(14);
 
     // ===== FOOTER BOX =====
     const ftLines = (cfg.footer||'THANK YOU! VISIT AGAIN').split('\n');
-    const ftGrad = ctx.createLinearGradient(0, ty, W, ty+FOOT_H);
-    ftGrad.addColorStop(0, TC.footBg1);
-    ftGrad.addColorStop(1, TC.footBg2);
-    ctx.fillStyle = ftGrad;
-    // rounded bottom
-    ctx.beginPath();
-    ctx.moveTo(PAD, ty);
-    ctx.lineTo(W-PAD, ty);
-    ctx.lineTo(W-PAD, H-20);
-    ctx.quadraticCurveTo(W-PAD, H-PAD+8, W-PAD-10, H-PAD+8);
-    ctx.lineTo(PAD+10, H-PAD+8);
-    ctx.quadraticCurveTo(PAD, H-PAD+8, PAD, H-20);
-    ctx.closePath();
-    ctx.fill();
+    if(lightMode){
+      ctx.strokeStyle = '#000'; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.moveTo(PAD, ty); ctx.lineTo(W-PAD, ty); ctx.stroke();
+    } else {
+      const ftGrad = ctx.createLinearGradient(0, ty, W, ty+FOOT_H);
+      ftGrad.addColorStop(0, TC.footBg1);
+      ftGrad.addColorStop(1, TC.footBg2);
+      ctx.fillStyle = ftGrad;
+      // rounded bottom
+      ctx.beginPath();
+      ctx.moveTo(PAD, ty);
+      ctx.lineTo(W-PAD, ty);
+      ctx.lineTo(W-PAD, H-20);
+      ctx.quadraticCurveTo(W-PAD, H-PAD+8, W-PAD-10, H-PAD+8);
+      ctx.lineTo(PAD+10, H-PAD+8);
+      ctx.quadraticCurveTo(PAD, H-PAD+8, PAD, H-20);
+      ctx.closePath();
+      ctx.fill();
+    }
 
-    ctx.fillStyle = C_WHITE;
+    ctx.fillStyle = lightMode ? C_DARK : C_WHITE;
     ctx.textAlign = 'center';
-    const ftStart = ty + (FOOT_H - ftLines.length*22) / 2;
+    const ftStart = ty + (FOOT_H - ftLines.length*S(22)) / 2;
     ftLines.forEach((fl,i)=>{
-      ctx.font = isUrdu ? `700 16px ${fontFam}` : `900 15px ${fontFam}`;
-      ctx.fillText(fl, W/2, ftStart + i*24);
+      ctx.font = isUrdu ? `700 ${S(16)}px ${fontFam}` : `900 ${S(15)}px ${fontFam}`;
+      ctx.fillText(fl, W/2, ftStart + i*S(24));
     });
 
     // ===== نیچے App watermark =====
-    ctx.fillStyle = 'rgba(255,255,255,0.55)';
+    ctx.fillStyle = lightMode ? '#999' : 'rgba(255,255,255,0.55)';
     ctx.font = `400 11px Arial, sans-serif`;
     ctx.fillText('Generated by FFPOS', W/2, H - 10);
 
@@ -5567,6 +5616,7 @@ function refreshSettingsUI(){
   document.querySelectorAll('#pmPaperWidthGrid button').forEach(b=>{
     b.classList.toggle('active', Number(b.dataset.width)===pw);
   });
+  _refreshLightPrintBtn();
   // ہر حال میں ہیڈر بٹن بھی اپڈیٹ کریں
   updatePrinterHeaderBtn();
 }
@@ -5786,7 +5836,7 @@ async function buildBillRasterBytes(sale){
   const cfg = getBillCfg();
   const paperWidthMM = cfg.paperWidth || 58;
   const targetWidthPx = paperWidthMM === 80 ? 576 : 384;
-  const billCanvas = await _buildBillCanvas(sale, true); // forPrint=true — صاف اردو فونٹ
+  const billCanvas = await _buildBillCanvas(sale, true, cfg.lightPrint); // forPrint=true, lightMode=کمزور پرنٹر سیٹنگ
   const scaled = scaleCanvasToWidth(billCanvas, targetWidthPx);
   const gray = canvasToGrayscale(scaled);
   return canvasToEscPosRaster(gray, paperWidthMM);
@@ -7339,7 +7389,7 @@ function generateFFPOSFileName(d){
   return 'FFPOS'+DD+M+DAY+HH+MM;
 }
 
-const APP_VERSION = 'FF001';
+const APP_VERSION = 'FF002';
 document.addEventListener('DOMContentLoaded', function(){
   const el = document.getElementById('appVersionVal');
   if(el) el.textContent = APP_VERSION;
