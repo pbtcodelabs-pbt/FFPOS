@@ -1,7 +1,7 @@
 // FFPOS Service Worker — cache-first, offline-ready
 // ہر نئی ریلیز پر CACHE_VERSION بڑھائیں تاکہ پرانا کیشے خودکار صاف ہو جائے
 // اور یوزر کو اگلی بار کھولنے پر نیا ورژن ملے۔
-const CACHE_VERSION = 'ffpos-FF002';
+const CACHE_VERSION = 'ffpos-FF003';
 const CACHE_NAME = CACHE_VERSION;
 
 const APP_SHELL = [
